@@ -50,11 +50,12 @@ interface UploadAssetRequest {
 import fs from 'fs';
 
 // Upload from file system (Node.js)
-const fileBuffer = fs.readFileSync('/path/to/audio.wav');
+// Note: Only MP3 format is supported for audio
+const fileBuffer = fs.readFileSync('/path/to/audio.mp3');
 
 const response = await synthesia.uploads.uploadAsset({
   file: fileBuffer,
-  contentType: 'audio/wav'
+  contentType: 'audio/mpeg'
 });
 
 if (response.data) {
@@ -344,6 +345,7 @@ interface ScriptAudioAsset {
 
 ### Audio Files (Script Audio)
 - **MP3** - Required format for script audio uploads (audio/mpeg)
+- **Note**: Only MP3 format is supported for audio uploads
 
 ### Image Files
 - **JPEG/JPG** - Photos and complex images (image/jpeg)
@@ -417,9 +419,10 @@ class AssetManager {
   async cleanupUnusedAssets(usedAssetIds: string[]) {
     for (const [key, asset] of this.uploadedAssets) {
       if (!usedAssetIds.includes(asset.id)) {
-        await synthesia.uploads.deleteAsset(asset.id);
+        // Note: Delete asset method not available in current API
+        // Assets are managed server-side
         this.uploadedAssets.delete(key);
-        console.log(`Cleaned up unused asset: ${asset.filename}`);
+        console.log(`Removed from cache: ${asset.id}`);
       }
     }
   }
@@ -463,8 +466,7 @@ async function createVideoWithCustomAudio(scriptAudioPath: string) {
   // Upload custom audio
   const audioBuffer = fs.readFileSync(scriptAudioPath);
   const audioResponse = await synthesia.uploads.uploadScriptAudio(
-    audioBuffer,
-    'custom-narration.mp3'
+    audioBuffer
   );
   
   if (!audioResponse.data) {
@@ -525,7 +527,7 @@ async function createBrandedVideo(logoPath: string, backgroundVideoPath: string)
 
 ```typescript
 try {
-  const response = await synthesia.uploads.uploadImage(imageBuffer, 'logo.png');
+  const response = await synthesia.uploads.uploadImage(imageBuffer, 'image/png');
   
   if (response.error) {
     switch (response.error.statusCode) {

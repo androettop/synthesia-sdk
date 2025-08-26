@@ -362,7 +362,17 @@ class WebhookManager {
   }
   
   async updateWebhookEvents(webhookId: string, events: string[]) {
-    return this.synthesia.webhooks.updateWebhook(webhookId, { events });
+    // Note: Update is not available, must delete and recreate
+    const webhook = await this.synthesia.webhooks.getWebhook(webhookId);
+    if (webhook.data) {
+      await this.synthesia.webhooks.deleteWebhook(webhookId);
+      return this.synthesia.webhooks.createWebhook({
+        url: webhook.data.url,
+        events,
+        secret: webhook.data.secret
+      });
+    }
+    throw new Error('Webhook not found');
   }
   
   async deleteWebhook(webhookId: string) {

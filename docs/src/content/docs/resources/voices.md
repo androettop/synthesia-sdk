@@ -72,13 +72,17 @@ async function createWithSpeedVariations() {
   const videos = await Promise.all(
     speeds.map((speed, index) =>
       synthesia.videos.createVideo({
-        title: `Speed Test ${speed}x`,
-        scenes: [{
+        input: [{
+          scriptText: 'This is a test of different speaking speeds. Notice how the pace affects the message delivery.',
           avatar: 'anna_costume1_cameraA',
           background: 'office',
-          script: 'This is a test of different speaking speeds. Notice how the pace affects the message delivery.',
-          voiceSettings: { speed, pitch: 1.0 }
+          avatarSettings: {
+            voice: 'anna_costume1_cameraA'
+          }
         }],
+        title: `Speed Test ${speed}x`,
+        visibility: 'private',
+        aspectRatio: '16:9',
         test: true
       })
     )
@@ -139,16 +143,17 @@ async function createWithPitchVariations() {
   const videos = await Promise.all(
     pitchVariations.map(variation =>
       synthesia.videos.createVideo({
-        title: `Pitch Test - ${variation.name}`,
-        scenes: [{
+        input: [{
+          scriptText: script,
           avatar: 'anna_costume1_cameraA',
           background: 'office',
-          script: script,
-          voiceSettings: {
-            speed: variation.speed,
-            pitch: variation.pitch
+          avatarSettings: {
+            voice: 'anna_costume1_cameraA'
           }
         }],
+        title: `Pitch Test - ${variation.name}`,
+        visibility: 'private',
+        aspectRatio: '16:9',
         test: true
       })
     )
@@ -193,13 +198,17 @@ async function createBusinessVideo(type: keyof typeof businessVoiceSettings) {
   const voiceSettings = businessVoiceSettings[type];
   
   const response = await synthesia.videos.createVideo({
-    title: `Business Video - ${type}`,
-    scenes: [{
+    input: [{
+      scriptText: 'This is a business communication with optimized voice settings.',
       avatar: 'james_costume1_cameraA',
       background: 'office',
-      script: 'This is a business communication with optimized voice settings.',
-      voiceSettings
+      avatarSettings: {
+        voice: 'james_costume1_cameraA'
+      }
     }],
+    title: `Business Video - ${type}`,
+    visibility: 'private',
+    aspectRatio: '16:9',
     test: true
   });
   
@@ -345,13 +354,17 @@ async function createEmotionalContent() {
   const videos = await Promise.all(
     scenarios.map(scenario =>
       synthesia.videos.createVideo({
-        title: `Emotional Voice - ${scenario.emotion}`,
-        scenes: [{
+        input: [{
+          scriptText: scenario.script,
           avatar: 'anna_costume1_cameraA',
           background: 'office',
-          script: scenario.script,
-          voiceSettings: scenario.voice
+          avatarSettings: {
+            voice: 'anna_costume1_cameraA'
+          }
         }],
+        title: `Emotional Voice - ${scenario.emotion}`,
+        visibility: 'private',
+        aspectRatio: '16:9',
         test: true
       })
     )
@@ -366,16 +379,27 @@ async function createEmotionalContent() {
 ```typescript
 async function createProgressiveVoiceVideo() {
   const response = await synthesia.videos.createVideo({
-    title: 'Progressive Voice Changes',
-    scenes: [
+    input: [
       {
+        scriptText: 'Let me start with a calm, professional introduction.',
         avatar: 'anna_costume1_cameraA',
         background: 'office',
-        script: 'Let me start with a calm, professional introduction.',
-        voiceSettings: { speed: 0.95, pitch: 1.0 }
+        avatarSettings: {
+          voice: 'anna_costume1_cameraA'
+        }
       },
       {
+        scriptText: 'Now I will speak with more energy and enthusiasm!',
         avatar: 'anna_costume1_cameraA',
+        background: 'office',
+        avatarSettings: {
+          voice: 'anna_costume1_cameraA'
+        }
+      }
+    ],
+    title: 'Progressive Voice Changes',
+    visibility: 'private',
+    aspectRatio: '16:9',
         background: 'office',
         script: 'Now I will speak with more energy and enthusiasm!',
         voiceSettings: { speed: 1.1, pitch: 1.1 }
@@ -427,13 +451,17 @@ async function createForNonNativeSpeakers(script: string, level: 'beginner' | 'i
   };
   
   const response = await synthesia.videos.createVideo({
-    title: `Language Learning - ${level}`,
-    scenes: [{
-      avatar: 'mary_teacher_cameraA',
+    input: [{
+      scriptText: script,
+      avatar: 'anna_costume1_cameraA', // Use available avatar
       background: 'library',
-      script: script,
-      voiceSettings: voiceSettings[level]
+      avatarSettings: {
+        voice: 'anna_costume1_cameraA'
+      }
     }],
+    title: `Language Learning - ${level}`,
+    visibility: 'private',
+    aspectRatio: '16:9',
     test: true
   });
   
@@ -458,13 +486,17 @@ async function voiceABTest(script: string, title: string) {
   const testResults = await Promise.all(
     voiceVariants.map(async (variant, index) => {
       const response = await synthesia.videos.createVideo({
-        title: `${title} - Voice Test ${variant.name}`,
-        scenes: [{
+        input: [{
+          scriptText: script,
           avatar: 'anna_costume1_cameraA',
           background: 'office',
-          script: script,
-          voiceSettings: variant.settings
+          avatarSettings: {
+            voice: 'anna_costume1_cameraA'
+          }
         }],
+        title: `${title} - Voice Test ${variant.name}`,
+        visibility: 'private',
+        aspectRatio: '16:9',
         test: true
       });
       
@@ -622,13 +654,17 @@ async function optimizeVoiceSettings(script: string, avatar: string) {
   
   for (const settings of testSettings) {
     const response = await synthesia.videos.createVideo({
-      title: `Voice Test - Speed: ${settings.speed}, Pitch: ${settings.pitch}`,
-      scenes: [{
+      input: [{
+        scriptText: script,
         avatar: avatar,
         background: 'office',
-        script: script,
-        voiceSettings: settings
+        avatarSettings: {
+          voice: avatar
+        }
       }],
+      title: `Voice Test - Speed: ${settings.speed}, Pitch: ${settings.pitch}`,
+      visibility: 'private',
+      aspectRatio: '16:9',
       test: true
     });
     

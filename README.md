@@ -34,10 +34,14 @@ const synthesia = new Synthesia({
 
 // Create a simple video
 const result = await synthesia.videos.createVideo({
+  input: [{
+    scriptText: "Hello world! This is my first Synthesia video.",
+    avatar: "anna_costume1_cameraA",
+    background: "green_screen"
+  }],
   title: "My First Video",
-  scriptText: "Hello world! This is my first Synthesia video.",
-  avatar: "anna_costume1_cameraA",
-  background: "green_screen",
+  visibility: "private",
+  aspectRatio: "16:9",
   test: true, // Use test mode for development
 });
 
@@ -65,13 +69,16 @@ const synthesia = new Synthesia({
 
 ```typescript
 const result = await synthesia.videos.createVideo({
+  input: [{
+    scriptText: "Your script text",
+    avatar: "anna_costume1_cameraA",
+    background: "green_screen"
+  }],
   title: "Video Title",
-  scriptText: "Your script text",
-  avatar: "anna_costume1_cameraA",
-  background: "green_screen",
+  visibility: "private", // Required: 'public' | 'private'
+  aspectRatio: "16:9", // Required: aspect ratio
   test: true, // Optional: test mode
-  visibility: "private", // Optional: 'public' | 'private'
-  webhookId: "webhook-id", // Optional: webhook for notifications
+  callbackId: "callback-id", // Optional: for tracking
 });
 ```
 
@@ -79,8 +86,8 @@ const result = await synthesia.videos.createVideo({
 
 ```typescript
 const result = await synthesia.videos.listVideos({
-  source: "workspace", // Optional: 'workspace' | 'personal' | 'shared'
-  limit: 10, // Optional: number of videos to return
+  source: "workspace", // Optional: 'workspace' | 'my_videos' | 'shared_with_me'
+  limit: 10, // Optional: number of videos to return (max 100)
   offset: 0, // Optional: pagination offset
 });
 ```
@@ -166,7 +173,11 @@ const result = await synthesia.webhooks.getWebhook("webhook-id");
 #### Update Webhook
 
 ```typescript
-const result = await synthesia.webhooks.updateWebhook("webhook-id", {
+// Note: Update webhook is not available in the API
+// Use delete and create instead
+await synthesia.webhooks.deleteWebhook("webhook-id");
+const result = await synthesia.webhooks.createWebhook({
+  url: "https://your-app.com/webhook",
   events: ["video.complete"],
 });
 ```
@@ -182,22 +193,18 @@ const result = await synthesia.webhooks.deleteWebhook("webhook-id");
 #### Upload Asset
 
 ```typescript
-const file = new Blob(["audio data"], { type: "audio/mpeg" });
+const file = Buffer.from("image data");
 const result = await synthesia.uploads.uploadAsset({
   file,
-  filename: "audio.mp3",
-  type: "audio",
+  contentType: "image/png",
 });
 ```
 
 #### Upload Script Audio
 
 ```typescript
-const audioFile = new Blob(["audio data"], { type: "audio/mpeg" });
-const result = await synthesia.uploads.uploadScriptAudio(
-  audioFile,
-  "script.mp3"
-);
+const audioBuffer = Buffer.from("mp3 audio data");
+const result = await synthesia.uploads.uploadScriptAudio(audioBuffer);
 ```
 
 ## Error Handling
@@ -364,9 +371,10 @@ This SDK implements all available Synthesia API endpoints:
 
 ### Upload API ✅
 
-- [x] Upload Assets
-- [x] Get Asset
-- [x] Delete Asset
+- [x] Upload Assets  
+- [x] Upload Script Audio
+- [x] Upload Images (via uploadImage helper)
+- [x] Upload Videos (via uploadVideo helper)
 
 ## License
 

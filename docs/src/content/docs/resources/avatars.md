@@ -262,10 +262,14 @@ const avatarsByIndustry = {
 ```typescript
 async function createWithSpecificAvatar() {
   const response = await synthesia.videos.createVideo({
+    input: [{
+      scriptText: 'Welcome to our quarterly business review.',
+      avatar: 'james_costume1_cameraA', // Professional male
+      background: 'office'
+    }],
     title: 'Professional Presentation',
-    scriptText: 'Welcome to our quarterly business review.',
-    avatar: 'james_costume1_cameraA', // Professional male
-    background: 'office',
+    visibility: 'private',
+    aspectRatio: '16:9',
     test: true
   });
   
@@ -310,10 +314,14 @@ async function createTargetedVideo(content: {
   const avatar = selectAvatarForContent(content.type, content.audience);
   
   const response = await synthesia.videos.createVideo({
+    input: [{
+      scriptText: content.script,
+      avatar: avatar,
+      background: 'office'
+    }],
     title: content.title,
-    scriptText: content.script,
-    avatar: avatar,
-    background: 'office',
+    visibility: 'private',
+    aspectRatio: '16:9',
     test: true
   });
   
@@ -335,10 +343,14 @@ async function createABTestVideos(script: string, title: string) {
   const videos = await Promise.all(
     avatarVariants.map((avatar, index) =>
       synthesia.videos.createVideo({
+        input: [{
+          scriptText: script,
+          avatar: avatar,
+          background: 'office'
+        }],
         title: `${title} - Variant ${index + 1}`,
-        scriptText: script,
-        avatar: avatar,
-        background: 'office',
+        visibility: 'private',
+        aspectRatio: '16:9',
         test: true
       })
     )

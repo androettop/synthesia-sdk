@@ -126,27 +126,28 @@ if (response.data) {
 
 ### updateWebhook()
 
-Update an existing webhook's configuration.
+> ⚠️ **Note**: Update webhook is not available in the current API. To modify a webhook, delete the existing one and create a new one.
 
 ```typescript
-async updateWebhook(webhookId: string, request: Partial<CreateWebhookRequest>): Promise<APIResponse<Webhook>>
+// Not available - use delete and create instead
+// async updateWebhook(webhookId: string, request: Partial<CreateWebhookRequest>): Promise<APIResponse<Webhook>>
 ```
 
-#### Parameters
-
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `webhookId` | `string` | ✅ | The unique webhook identifier |
-| `request` | `Partial<CreateWebhookRequest>` | ✅ | Properties to update |
-
-#### Example
+#### Alternative: Delete and Recreate
 
 ```typescript
-// Update webhook URL and events
-const response = await synthesia.webhooks.updateWebhook('webhook-123', {
-  url: 'https://new-domain.com/webhooks/synthesia',
-  events: ['video.created', 'video.complete', 'video.failed']
-});
+// To "update" a webhook, delete and recreate it
+const deleteResponse = await synthesia.webhooks.deleteWebhook('webhook-123');
+
+if (!deleteResponse.error) {
+  const newResponse = await synthesia.webhooks.createWebhook({
+    url: 'https://new-domain.com/webhooks/synthesia',
+    events: ['video.created', 'video.complete', 'video.failed'],
+    secret: 'your-webhook-secret'
+  });
+  
+  console.log('Webhook recreated:', newResponse.data?.id);
+}
 
 // Add a secret to existing webhook
 const response = await synthesia.webhooks.updateWebhook('webhook-123', {
