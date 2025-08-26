@@ -40,7 +40,6 @@ async createWebhook(request: CreateWebhookRequest): Promise<APIResponse<Webhook>
 interface CreateWebhookRequest {
   url: string;              // Your webhook endpoint URL
   events: WebhookEvent[];   // Events to subscribe to
-  secret?: string;          // Optional secret for signature verification
 }
 
 type WebhookEvent = 'video.created' | 'video.completed' | 'video.failed';
@@ -51,16 +50,17 @@ type WebhookEvent = 'video.created' | 'video.completed' | 'video.failed';
 ```typescript
 const response = await synthesia.webhooks.createWebhook({
   url: 'https://your-app.com/webhooks/synthesia',
-  events: ['video.completed', 'video.failed'],
-  secret: 'your-webhook-secret-key'
+  events: ['video.completed', 'video.failed']
 });
 
 if (response.data) {
   console.log('Webhook created:', response.data.id);
   console.log('Status:', response.data.status);
+  console.log('Auto-generated secret:', response.data.secret); // Secret is automatically generated
   
-  // Store webhook ID for future use
+  // Store webhook ID and secret for signature verification
   const webhookId = response.data.id;
+  const webhookSecret = response.data.secret;
 }
 ```
 
@@ -142,8 +142,7 @@ const deleteResponse = await synthesia.webhooks.deleteWebhook('webhook-123');
 if (!deleteResponse.error) {
   const newResponse = await synthesia.webhooks.createWebhook({
     url: 'https://new-domain.com/webhooks/synthesia',
-    events: ['video.created', 'video.completed', 'video.failed'],
-    secret: 'your-webhook-secret'
+    events: ['video.created', 'video.completed', 'video.failed']
   });
   
   console.log('Webhook recreated:', newResponse.data?.id);
@@ -461,8 +460,7 @@ class WebhookManager {
     // Create new webhook
     const response = await this.synthesia.webhooks.createWebhook({
       url: `${baseUrl}/webhooks/synthesia`,
-      events: ['video.completed', 'video.failed'],
-      secret: process.env.WEBHOOK_SECRET
+      events: ['video.completed', 'video.failed']
     });
     
     if (response.error) {
