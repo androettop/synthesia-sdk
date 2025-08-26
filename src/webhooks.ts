@@ -30,7 +30,4 @@ export class WebhooksAPI extends SynthesiaClient {
     return this.delete<void>(`/webhooks/${webhookId}`);
   }
 
-  async updateWebhook(webhookId: string, request: Partial<CreateWebhookRequest>): Promise<APIResponse<Webhook>> {
-    return this.patch<Webhook>(`/webhooks/${webhookId}`, request);
-  }
 }

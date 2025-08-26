@@ -16,9 +16,27 @@ export interface CreateVideoRequest {
 }
 
 export interface VideoInput {
-  scriptText?: string;
-  scriptAudio?: string;
-  scriptLanguage?: string;
+  scriptText?: string;      // Required if scriptAudio not provided
+  scriptAudio?: string;     // Required if scriptText not provided  
+  scriptLanguage?: string;  // Required when using scriptAudio
+  avatar: string;           // Required
+  background: string;       // Required
+  avatarSettings?: AvatarSettings;
+  backgroundSettings?: BackgroundSettings;
+}
+
+// Helper types for better type safety
+export interface VideoInputWithText {
+  scriptText: string;
+  avatar: string;
+  background: string;
+  avatarSettings?: AvatarSettings;
+  backgroundSettings?: BackgroundSettings;
+}
+
+export interface VideoInputWithAudio {
+  scriptAudio: string;
+  scriptLanguage: string;
   avatar: string;
   background: string;
   avatarSettings?: AvatarSettings;
@@ -186,10 +204,12 @@ export interface ScriptAudioAsset {
 }
 
 export interface SynthesiaError {
-  message: string;
-  code?: string;
-  statusCode: number;
-  details?: any;
+  message: string;      // Used by SDK for general error messages
+  context?: string;     // API field: detailed error context  
+  error?: string;       // API field: error type (e.g., "ValidationError")
+  code?: string;        // SDK field for error codes
+  statusCode: number;   // HTTP status code
+  details?: any;        // Additional error details
 }
 
 export interface APIResponse<T> {
