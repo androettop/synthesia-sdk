@@ -11,6 +11,8 @@ export class TemplatesAPI extends SynthesiaClient {
     const params: any = {};
     
     if (request?.source) params.source = request.source;
+    if (request?.offset) params.offset = request.offset;
+    if (request?.limit) params.limit = request.limit;
 
     return this.get<ListTemplatesResponse>('/templates', params);
   }

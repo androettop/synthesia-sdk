@@ -2,17 +2,18 @@ import { SynthesiaClient } from './client';
 import {
   UploadAssetRequest,
   Asset,
+  ScriptAudioAsset,
   APIResponse,
 } from './types';
 
 export class UploadsAPI extends SynthesiaClient {
   async uploadAsset(request: UploadAssetRequest): Promise<APIResponse<Asset>> {
-    const formData = new FormData();
-    formData.append('file', request.file as Blob, request.filename);
-    formData.append('type', request.type);
+    const headers = {
+      'Content-Type': request.contentType,
+    };
 
     try {
-      const response = await this.request<Asset>('POST', '/uploads/assets', formData);
+      const response = await this.request<Asset>('POST', '/assets', request.file, { headers, uploadApi: true });
       return response;
     } catch (error) {
       return {
@@ -21,35 +22,33 @@ export class UploadsAPI extends SynthesiaClient {
     }
   }
 
-  async uploadScriptAudio(audioFile: Buffer | Blob, filename: string): Promise<APIResponse<Asset>> {
-    return this.uploadAsset({
-      file: audioFile,
-      filename,
-      type: 'audio',
-    });
+  async uploadScriptAudio(audioFile: Buffer | Blob): Promise<APIResponse<ScriptAudioAsset>> {
+    const headers = {
+      'Content-Type': 'audio/mpeg',
+    };
+
+    try {
+      const response = await this.request<ScriptAudioAsset>('POST', '/scriptAudio', audioFile, { headers, uploadApi: true });
+      return response;
+    } catch (error) {
+      return {
+        error: error as any,
+      };
+    }
   }
 
-  async uploadImage(imageFile: Buffer | Blob, filename: string): Promise<APIResponse<Asset>> {
+  async uploadImage(imageFile: Buffer | Blob, contentType: string): Promise<APIResponse<Asset>> {
     return this.uploadAsset({
       file: imageFile,
-      filename,
-      type: 'image',
+      contentType,
     });
   }
 
-  async uploadVideo(videoFile: Buffer | Blob, filename: string): Promise<APIResponse<Asset>> {
+  async uploadVideo(videoFile: Buffer | Blob, contentType: string): Promise<APIResponse<Asset>> {
     return this.uploadAsset({
       file: videoFile,
-      filename,
-      type: 'video',
+      contentType,
     });
   }
 
-  async getAsset(assetId: string): Promise<APIResponse<Asset>> {
-    return this.get<Asset>(`/uploads/assets/${assetId}`);
-  }
-
-  async deleteAsset(assetId: string): Promise<APIResponse<void>> {
-    return this.delete<void>(`/uploads/assets/${assetId}`);
-  }
 }

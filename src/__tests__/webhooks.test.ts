@@ -20,14 +20,15 @@ describe('WebhooksAPI', () => {
   beforeEach(() => {
     const axios = require('axios');
     mockRequest = jest.fn();
-    axios.create.mockReturnValue({
+    const mockAxiosInstance = {
       request: mockRequest,
       interceptors: {
         response: {
           use: jest.fn(),
         },
       },
-    });
+    };
+    axios.create.mockReturnValue(mockAxiosInstance);
 
     webhooksAPI = new WebhooksAPI({
       apiKey: 'test-api-key',
@@ -43,16 +44,14 @@ describe('WebhooksAPI', () => {
       const mockWebhook: Webhook = {
         id: 'webhook-123',
         url: 'https://example.com/webhook',
-        events: ['video.complete'],
-        active: true,
-        createdAt: '2023-01-01T00:00:00Z',
-        updatedAt: '2023-01-01T00:00:00Z',
+        status: 'active',
+        createdAt: 1672531200,
+        lastUpdatedAt: 1672531200,
       };
 
       const createRequest: CreateWebhookRequest = {
         url: 'https://example.com/webhook',
-        events: ['video.complete'],
-        secret: 'webhook-secret',
+        events: ['video.completed'],
       };
 
       mockRequest.mockResolvedValue({
@@ -67,6 +66,7 @@ describe('WebhooksAPI', () => {
         method: 'POST',
         url: '/webhooks',
         data: createRequest,
+        params: undefined,
       });
     });
   });
@@ -78,13 +78,11 @@ describe('WebhooksAPI', () => {
           {
             id: 'webhook-1',
             url: 'https://example.com/webhook1',
-            events: ['video.complete'],
-            active: true,
-            createdAt: '2023-01-01T00:00:00Z',
-            updatedAt: '2023-01-01T00:00:00Z',
+            status: 'active',
+            createdAt: 1672531200,
+            lastUpdatedAt: 1672531200,
           },
         ],
-        count: 1,
       };
 
       mockRequest.mockResolvedValue({
@@ -98,7 +96,7 @@ describe('WebhooksAPI', () => {
         method: 'GET',
         url: '/webhooks',
         data: undefined,
-        params: undefined,
+        params: {},
       });
     });
   });
@@ -108,11 +106,10 @@ describe('WebhooksAPI', () => {
       const mockWebhook: Webhook = {
         id: 'webhook-123',
         url: 'https://example.com/webhook',
-        events: ['video.complete', 'video.failed'],
-        active: true,
+        status: 'active',
         secret: 'webhook-secret',
-        createdAt: '2023-01-01T00:00:00Z',
-        updatedAt: '2023-01-01T00:00:00Z',
+        createdAt: 1672531200,
+        lastUpdatedAt: 1672531200,
       };
 
       mockRequest.mockResolvedValue({
@@ -143,6 +140,8 @@ describe('WebhooksAPI', () => {
       expect(mockRequest).toHaveBeenCalledWith({
         method: 'DELETE',
         url: '/webhooks/webhook-123',
+        data: undefined,
+        params: undefined,
       });
     });
   });

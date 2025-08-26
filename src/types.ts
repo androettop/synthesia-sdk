@@ -4,28 +4,41 @@ export interface SynthesiaConfig {
 }
 
 export interface CreateVideoRequest {
-  test?: boolean;
+  input: VideoInput[];
   title: string;
-  scriptText?: string;
-  avatar?: string;
-  background?: string;
-  scenes?: Scene[];
-  template?: TemplateConfig;
-  webhookId?: string;
-  visibility?: 'public' | 'private';
+  description?: string;
+  visibility: 'public' | 'private';
+  aspectRatio: '16:9' | '9:16' | '1:1' | '4:5' | '5:4';
+  test?: boolean;
   ctaSettings?: CTASettings;
+  callbackId?: string;
+  soundtrack?: 'corporate' | 'inspirational' | 'modern' | 'urban';
 }
 
-export interface Scene {
+export interface VideoInput {
+  scriptText?: string;
+  scriptAudio?: string;
+  scriptLanguage?: string;
   avatar: string;
   background: string;
-  script: string;
-  voiceSettings?: VoiceSettings;
+  avatarSettings?: AvatarSettings;
+  backgroundSettings?: BackgroundSettings;
 }
 
-export interface VoiceSettings {
-  speed?: number;
-  pitch?: number;
+export interface AvatarSettings {
+  voice?: string;
+  horizontalAlign?: 'left' | 'center' | 'right';
+  scale?: number;
+  style?: 'rectangular' | 'circular';
+  backgroundColor?: string;
+  seamless?: boolean;
+}
+
+export interface BackgroundSettings {
+  videoSettings?: {
+    shortBackgroundContentMatchMode?: 'freeze' | 'loop' | 'slow_down';
+    longBackgroundContentMatchMode?: 'trim' | 'speed_up';
+  };
 }
 
 export interface TemplateConfig {
@@ -36,49 +49,48 @@ export interface TemplateConfig {
 export interface CTASettings {
   label: string;
   url: string;
-  style?: 'button' | 'overlay';
 }
 
 export interface Video {
   id: string;
   title: string;
-  status: 'in_progress' | 'complete' | 'failed';
+  description?: string;
+  status: 'in_progress' | 'complete' | 'failed' | 'error' | 'rejected';
   visibility: 'public' | 'private';
-  createdAt: string;
-  updatedAt: string;
+  createdAt: number;
+  lastUpdatedAt: number;
   download?: string;
-  thumbnails?: {
-    static: string;
-    animated: string;
-  };
+  thumbnail?: {
+    image?: string;
+    gif?: string;
+  } | string;
   captions?: {
     srt: string;
     vtt: string;
   };
-  duration?: number;
+  duration?: string;
   ctaSettings?: CTASettings;
+  callbackId?: string;
 }
 
 export interface ListVideosResponse {
   videos: Video[];
-  count: number;
-  offset?: number;
-  limit?: number;
+  nextOffset?: number;
 }
 
 export interface ListVideosRequest {
-  source?: 'workspace' | 'personal' | 'shared';
+  source?: 'workspace' | 'my_videos' | 'shared_with_me';
   offset?: number;
   limit?: number;
 }
 
 export interface Template {
   id: string;
-  name: string;
+  title: string;
   description?: string;
-  variables: TemplateVariable[];
-  thumbnailUrl?: string;
-  source: 'synthesia' | 'workspace';
+  variables: any[];
+  createdAt: number;
+  lastUpdatedAt: number;
 }
 
 export interface TemplateVariable {
@@ -90,54 +102,87 @@ export interface TemplateVariable {
 
 export interface ListTemplatesResponse {
   templates: Template[];
-  count: number;
+  nextOffset?: number;
 }
 
 export interface ListTemplatesRequest {
   source?: 'synthesia' | 'workspace';
+  offset?: number;
+  limit?: number;
 }
 
 export interface Webhook {
   id: string;
   url: string;
-  events: WebhookEvent[];
+  status: 'active' | 'inactive';
   secret?: string;
-  createdAt: string;
-  updatedAt: string;
-  active: boolean;
+  createdAt: number;
+  lastUpdatedAt: number;
 }
 
-export type WebhookEvent = 'video.created' | 'video.complete' | 'video.failed';
+export type WebhookEvent = 'video.completed' | 'video.failed';
 
 export interface CreateWebhookRequest {
   url: string;
   events: WebhookEvent[];
-  secret?: string;
 }
 
 export interface ListWebhooksResponse {
   webhooks: Webhook[];
-  count: number;
+}
+
+export interface ListWebhooksRequest {
+  limit?: number;
+  offset?: number;
+  deleted?: boolean;
 }
 
 export interface UpdateVideoRequest {
   title?: string;
+  description?: string;
   visibility?: 'public' | 'private';
+  ctaSettings?: CTASettings;
+}
+
+export interface CreateVideoFromTemplateRequest {
+  templateId: string;
+  templateData: Record<string, any>;
+  title?: string;
+  description?: string;
+  visibility?: 'public' | 'private';
+  callbackId?: string;
+  ctaSettings?: CTASettings;
+  test?: boolean;
+}
+
+export interface GetXLIFFRequest {
+  videoVersion?: number;
+  xliffVersion?: '1.2';
+}
+
+export interface UploadXLIFFRequest {
+  videoId: string;
+  xliffContent: string;
+  callbackId?: string;
+}
+
+export interface TranslatedVideoResponse {
+  translatedVideoId: string;
+  message: string;
 }
 
 export interface UploadAssetRequest {
   file: Buffer | Blob;
-  filename: string;
-  type: 'audio' | 'image' | 'video';
+  contentType: string;
 }
 
 export interface Asset {
   id: string;
-  filename: string;
-  type: 'audio' | 'image' | 'video';
-  url: string;
-  createdAt: string;
-  size: number;
+  title?: string;
+}
+
+export interface ScriptAudioAsset {
+  id: string;
 }
 
 export interface SynthesiaError {

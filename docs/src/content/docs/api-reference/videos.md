@@ -37,16 +37,25 @@ async createVideo(request: CreateVideoRequest): Promise<APIResponse<Video>>
 
 ```typescript
 interface CreateVideoRequest {
-  test?: boolean;              // Create test video (watermarked, 30s max)
+  input: VideoInput[];         // Array of video scenes/clips (required)
   title: string;               // Video title
-  scriptText?: string;         // Simple script text for single scene
-  avatar?: string;             // Avatar ID for simple videos
-  background?: string;         // Background for simple videos  
-  scenes?: Scene[];            // Advanced: multiple scenes
-  template?: TemplateConfig;   // Use template instead of scenes
-  webhookId?: string;          // Webhook to notify on completion
-  visibility?: 'public' | 'private'; // Video visibility
+  description?: string;        // Video description
+  visibility: 'public' | 'private'; // Video visibility (required)
+  aspectRatio: '16:9' | '9:16' | '1:1' | '4:5' | '5:4'; // Video aspect ratio (required)
+  test?: boolean;              // Create test video (watermarked)
   ctaSettings?: CTASettings;   // Call-to-action button
+  callbackId?: string;         // Custom identifier for linking
+  soundtrack?: 'corporate' | 'inspirational' | 'modern' | 'urban'; // Background music
+}
+
+interface VideoInput {
+  scriptText?: string;         // Text-to-speech script
+  scriptAudio?: string;        // Uploaded audio asset ID (alternative to scriptText)
+  scriptLanguage?: string;     // Language code (required with scriptAudio)
+  avatar: string;              // Avatar ID (required)
+  background: string;          // Background ID or asset (required)
+  avatarSettings?: AvatarSettings; // Avatar customization
+  backgroundSettings?: BackgroundSettings; // Background settings
 }
 ```
 
@@ -54,12 +63,15 @@ interface CreateVideoRequest {
 
 ```typescript
 const response = await synthesia.videos.createVideo({
-  test: true, // Remove for production videos
+  input: [{
+    scriptText: 'Hello! Welcome to our platform. We are excited to have you here!',
+    avatar: 'anna_costume1_cameraA',
+    background: 'green_screen'
+  }],
   title: 'Welcome Video',
-  scriptText: 'Hello! Welcome to our platform. We are excited to have you here!',
-  avatar: 'anna_costume1_cameraA',
-  background: 'green_screen',
-  visibility: 'private'
+  visibility: 'private',
+  aspectRatio: '16:9',
+  test: true // Remove for production videos
 });
 
 if (response.data) {
@@ -72,31 +84,34 @@ if (response.data) {
 
 ```typescript
 const response = await synthesia.videos.createVideo({
-  title: 'Product Demo',
-  scenes: [
+  input: [
     {
+      scriptText: 'Welcome to our product demonstration.',
       avatar: 'anna_costume1_cameraA',
       background: 'office',
-      script: 'Welcome to our product demonstration.',
-      voiceSettings: {
-        speed: 1.1,
-        pitch: 0.95
+      avatarSettings: {
+        voice: 'en-US-AriaNeural',
+        scale: 1.0,
+        horizontalAlign: 'center'
       }
     },
     {
+      scriptText: 'Let me show you the key features.',
       avatar: 'james_costume1_cameraA', 
       background: 'white_studio',
-      script: 'Let me show you the key features.',
-      voiceSettings: {
-        speed: 1.0,
-        pitch: 1.0
+      avatarSettings: {
+        voice: 'en-US-GuyNeural',
+        scale: 1.1,
+        horizontalAlign: 'left'
       }
     }
   ],
+  title: 'Product Demo',
+  visibility: 'public',
+  aspectRatio: '16:9',
   ctaSettings: {
     label: 'Learn More',
-    url: 'https://example.com/learn-more',
-    style: 'button'
+    url: 'https://example.com/learn-more'
   }
 });
 ```
@@ -107,16 +122,20 @@ const response = await synthesia.videos.createVideo({
 // First create a webhook
 const webhook = await synthesia.webhooks.createWebhook({
   url: 'https://your-server.com/webhook',
-  events: ['video.complete', 'video.failed']
+  events: ['video.completed', 'video.failed']
 });
 
-// Then create video with webhook notification
+// Then create video with callback ID for tracking
 const response = await synthesia.videos.createVideo({
+  input: [{
+    scriptText: 'This video will trigger a webhook when complete.',
+    avatar: 'anna_costume1_cameraA',
+    background: 'green_screen'
+  }],
   title: 'Automated Video',
-  scriptText: 'This video will trigger a webhook when complete.',
-  avatar: 'anna_costume1_cameraA',
-  background: 'green_screen',
-  webhookId: webhook.data?.id
+  visibility: 'private',
+  aspectRatio: '16:9',
+  callbackId: 'user-123-video-abc' // Use for linking back to your system
 });
 ```
 
@@ -140,7 +159,7 @@ async listVideos(request?: ListVideosRequest): Promise<APIResponse<ListVideosRes
 
 ```typescript
 interface ListVideosRequest {
-  source?: 'workspace' | 'personal' | 'shared'; // Video source filter
+  source?: 'workspace' | 'my_videos' | 'shared_with_me'; // Video source filter
   offset?: number;   // Pagination offset
   limit?: number;    // Results per page (max 100)
 }
@@ -160,7 +179,10 @@ const response = await synthesia.videos.listVideos({
 });
 
 if (response.data) {
-  console.log(`Found ${response.data.count} videos`);
+  console.log(`Found ${response.data.videos.length} videos`);
+  if (response.data.nextOffset) {
+    console.log(`Next page offset: ${response.data.nextOffset}`);
+  }
   response.data.videos.forEach(video => {
     console.log(`- ${video.title} (${video.status})`);
   });
@@ -192,11 +214,15 @@ if (response.data) {
   const video = response.data;
   console.log('Title:', video.title);
   console.log('Status:', video.status);
-  console.log('Duration:', video.duration, 'seconds');
+  console.log('Duration:', video.duration);
   
   if (video.status === 'complete') {
     console.log('Download URL:', video.download);
-    console.log('Thumbnail:', video.thumbnails?.static);
+    if (typeof video.thumbnail === 'object') {
+      console.log('Thumbnail:', video.thumbnail?.image);
+    } else {
+      console.log('Thumbnail:', video.thumbnail);
+    }
   }
 }
 ```
@@ -223,7 +249,36 @@ async updateVideo(videoId: string, request: UpdateVideoRequest): Promise<APIResp
 ```typescript
 interface UpdateVideoRequest {
   title?: string;                    // New video title
+  description?: string;              // New video description
   visibility?: 'public' | 'private'; // New visibility setting
+  ctaSettings?: CTASettings;         // Call-to-action settings
+}
+
+interface CreateVideoFromTemplateRequest {
+  templateId: string;                // Template ID (required)
+  templateData: Record<string, any>; // Variable values for template
+  title?: string;                    // Video title
+  description?: string;              // Video description
+  visibility?: 'public' | 'private'; // Video visibility
+  callbackId?: string;               // Custom identifier
+  ctaSettings?: CTASettings;         // Call-to-action settings
+  test?: boolean;                    // Create test video
+}
+
+interface GetXLIFFRequest {
+  videoVersion?: number;             // Video version to export
+  xliffVersion?: '1.2';              // XLIFF version (only 1.2 supported)
+}
+
+interface UploadXLIFFRequest {
+  videoId: string;                   // Original video ID
+  xliffContent: string;              // Translated XLIFF content
+  callbackId?: string;               // Optional tracking ID
+}
+
+interface TranslatedVideoResponse {
+  translatedVideoId: string;         // New translated video ID
+  message: string;                   // Confirmation message
 }
 ```
 
@@ -305,11 +360,101 @@ const response = await synthesia.videos.createVideoFromTemplate(
   },
   {
     title: 'Personalized Welcome Video for John',
-    test: true,
-    visibility: 'private'
+    visibility: 'private',
+    aspectRatio: '16:9',
+    test: true
   }
 );
 ```
+
+---
+
+### getVideoXLIFF()
+
+Retrieve XLIFF content for a video for translation purposes.
+
+```typescript
+async getVideoXLIFF(videoId: string, options?: GetXLIFFRequest): Promise<APIResponse<string>>
+```
+
+#### Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `videoId` | `string` | ✅ | The unique video identifier |
+| `options` | `GetXLIFFRequest` | ❌ | XLIFF export options |
+
+#### GetXLIFFRequest Interface
+
+```typescript
+interface GetXLIFFRequest {
+  videoVersion?: number;    // Video version to export (default: latest)
+  xliffVersion?: '1.2';     // XLIFF version (only 1.2 supported)
+}
+```
+
+#### Example
+
+```typescript
+const response = await synthesia.videos.getVideoXLIFF('video-123', {
+  videoVersion: 1,
+  xliffVersion: '1.2'
+});
+
+if (response.data) {
+  const xliffContent = response.data;
+  console.log('XLIFF Content:', xliffContent);
+  
+  // Save to file or send to translation service
+  fs.writeFileSync('video-123.xliff', xliffContent);
+}
+```
+
+---
+
+### uploadXLIFFTranslation()
+
+Upload translated XLIFF content to create a translated version of a video.
+
+```typescript
+async uploadXLIFFTranslation(request: UploadXLIFFRequest): Promise<APIResponse<TranslatedVideoResponse>>
+```
+
+#### Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `request` | `UploadXLIFFRequest` | ✅ | Translation upload configuration |
+
+#### UploadXLIFFRequest Interface
+
+```typescript
+interface UploadXLIFFRequest {
+  videoId: string;       // Original video ID
+  xliffContent: string;  // Translated XLIFF content in XML format
+  callbackId?: string;   // Optional ID for tracking
+}
+```
+
+#### Example
+
+```typescript
+// Read translated XLIFF file
+const translatedXLIFF = fs.readFileSync('video-123-es.xliff', 'utf8');
+
+const response = await synthesia.videos.uploadXLIFFTranslation({
+  videoId: 'video-123',
+  xliffContent: translatedXLIFF,
+  callbackId: 'translation-spanish-001'
+});
+
+if (response.data) {
+  console.log('Translated video ID:', response.data.translatedVideoId);
+  console.log('Message:', response.data.message);
+}
+```
+
+---
 
 ## TypeScript Interfaces
 
@@ -319,34 +464,52 @@ const response = await synthesia.videos.createVideoFromTemplate(
 interface Video {
   id: string;
   title: string;
-  status: 'in_progress' | 'complete' | 'failed';
+  description?: string;
+  status: 'in_progress' | 'complete' | 'failed' | 'error' | 'rejected';
   visibility: 'public' | 'private';
-  createdAt: string;
-  updatedAt: string;
+  createdAt: number;        // Unix timestamp
+  lastUpdatedAt: number;    // Unix timestamp
   download?: string;        // Available when status is 'complete'
-  thumbnails?: {
-    static: string;
-    animated: string;
-  };
+  thumbnail?: {             // Available when status is 'complete'
+    image?: string;
+    gif?: string;
+  } | string;
   captions?: {              // Available when status is 'complete'
     srt: string;
     vtt: string;
   };
-  duration?: number;        // Video duration in seconds
+  duration?: string;        // Video duration (e.g., "0:02:30.204")
   ctaSettings?: CTASettings;
+  callbackId?: string;      // Custom identifier
 }
 ```
 
-### Scene
+### VideoInput
 
 ```typescript
-interface Scene {
-  avatar: string;           // Avatar ID
-  background: string;       // Background ID
-  script: string;          // Scene script text
-  voiceSettings?: {
-    speed?: number;         // Voice speed (0.5 - 2.0)
-    pitch?: number;         // Voice pitch (0.5 - 2.0)
+interface VideoInput {
+  scriptText?: string;      // Text-to-speech script
+  scriptAudio?: string;     // Uploaded audio asset ID
+  scriptLanguage?: string;  // Language code (required with scriptAudio)
+  avatar: string;           // Avatar ID (required)
+  background: string;       // Background ID or asset (required)
+  avatarSettings?: AvatarSettings;
+  backgroundSettings?: BackgroundSettings;
+}
+
+interface AvatarSettings {
+  voice?: string;           // Voice ID
+  horizontalAlign?: 'left' | 'center' | 'right';
+  scale?: number;           // Avatar scale (default: 1.0)
+  style?: 'rectangular' | 'circular';
+  backgroundColor?: string; // HEX color for circular style
+  seamless?: boolean;       // Seamless looping
+}
+
+interface BackgroundSettings {
+  videoSettings?: {
+    shortBackgroundContentMatchMode?: 'freeze' | 'loop' | 'slow_down';
+    longBackgroundContentMatchMode?: 'trim' | 'speed_up';
   };
 }
 ```
@@ -357,7 +520,6 @@ interface Scene {
 interface CTASettings {
   label: string;            // Button/overlay text
   url: string;             // Destination URL
-  style?: 'button' | 'overlay'; // Display style
 }
 ```
 
@@ -376,11 +538,15 @@ interface CTASettings {
 ```typescript
 // Always use test mode during development
 const video = await synthesia.videos.createVideo({
-  test: true, // Creates watermarked video, doesn't count against quota
+  input: [{
+    scriptText: 'Testing video creation...',
+    avatar: 'anna_costume1_cameraA',
+    background: 'green_screen'
+  }],
   title: 'Development Test',
-  scriptText: 'Testing video creation...',
-  avatar: 'anna_costume1_cameraA',
-  background: 'green_screen'
+  visibility: 'private',
+  aspectRatio: '16:9',
+  test: true // Creates watermarked video, doesn't count against quota
 });
 ```
 
@@ -417,16 +583,20 @@ Instead of polling, use webhooks for efficient video completion notifications:
 // Create webhook once
 const webhook = await synthesia.webhooks.createWebhook({
   url: 'https://your-app.com/webhook/synthesia',
-  events: ['video.complete', 'video.failed']
+  events: ['video.completed', 'video.failed']
 });
 
-// Use webhook ID in video creation
+// Create video with callback ID for tracking
 const video = await synthesia.videos.createVideo({
+  input: [{
+    scriptText: 'Your script here...',
+    avatar: 'anna_costume1_cameraA',
+    background: 'office'
+  }],
   title: 'Production Video',
-  scriptText: 'Your script here...',
-  avatar: 'anna_costume1_cameraA',
-  background: 'office',
-  webhookId: webhook.data?.id
+  visibility: 'private',
+  aspectRatio: '16:9',
+  callbackId: 'production-video-123' // Use for linking back to your system
 });
 ```
 
@@ -435,10 +605,14 @@ const video = await synthesia.videos.createVideo({
 ```typescript
 try {
   const response = await synthesia.videos.createVideo({
+    input: [{
+      scriptText: 'Hello world!',
+      avatar: 'anna_costume1_cameraA',
+      background: 'green_screen'
+    }],
     title: 'My Video',
-    scriptText: 'Hello world!',
-    avatar: 'anna_costume1_cameraA',
-    background: 'green_screen'
+    visibility: 'private',
+    aspectRatio: '16:9'
   });
   
   if (response.error) {

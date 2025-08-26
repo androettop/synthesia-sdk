@@ -1,10 +1,14 @@
 import { SynthesiaClient } from './client';
 import {
   CreateVideoRequest,
+  CreateVideoFromTemplateRequest,
   Video,
   ListVideosRequest,
   ListVideosResponse,
   UpdateVideoRequest,
+  GetXLIFFRequest,
+  UploadXLIFFRequest,
+  TranslatedVideoResponse,
   APIResponse,
 } from './types';
 
@@ -38,17 +42,29 @@ export class VideosAPI extends SynthesiaClient {
   async createVideoFromTemplate(
     templateId: string,
     data: Record<string, any>,
-    options?: Partial<CreateVideoRequest>
+    options?: Partial<CreateVideoFromTemplateRequest>
   ): Promise<APIResponse<Video>> {
-    const request: CreateVideoRequest = {
+    const request: CreateVideoFromTemplateRequest = {
+      templateId,
+      templateData: data,
       title: options?.title || 'Video from Template',
-      template: {
-        id: templateId,
-        data,
-      },
+      visibility: options?.visibility || 'private',
       ...options,
     };
 
-    return this.createVideo(request);
+    return this.post<Video>('/videos/fromTemplate', request);
+  }
+
+  async getVideoXLIFF(videoId: string, options?: GetXLIFFRequest): Promise<APIResponse<string>> {
+    const params: any = {};
+    
+    if (options?.videoVersion) params.videoVersion = options.videoVersion;
+    if (options?.xliffVersion) params.xliffVersion = options.xliffVersion;
+
+    return this.get<string>(`/videos/${videoId}/xliff`, params);
+  }
+
+  async uploadXLIFFTranslation(request: UploadXLIFFRequest): Promise<APIResponse<TranslatedVideoResponse>> {
+    return this.post<TranslatedVideoResponse>('/translate/manual', request);
   }
 }

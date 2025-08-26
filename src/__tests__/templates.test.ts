@@ -20,14 +20,15 @@ describe('TemplatesAPI', () => {
   beforeEach(() => {
     const axios = require('axios');
     mockRequest = jest.fn();
-    axios.create.mockReturnValue({
+    const mockAxiosInstance = {
       request: mockRequest,
       interceptors: {
         response: {
           use: jest.fn(),
         },
       },
-    });
+    };
+    axios.create.mockReturnValue(mockAxiosInstance);
 
     templatesAPI = new TemplatesAPI({
       apiKey: 'test-api-key',
@@ -44,20 +45,14 @@ describe('TemplatesAPI', () => {
         templates: [
           {
             id: 'template-1',
-            name: 'Template 1',
+            title: 'Template 1',
             description: 'A test template',
-            variables: [
-              {
-                name: 'name',
-                type: 'text',
-                required: true,
-                description: 'Person name',
-              },
-            ],
-            source: 'synthesia',
+            variables: [],
+            createdAt: 1672531200,
+            lastUpdatedAt: 1672531200,
           },
         ],
-        count: 1,
+        nextOffset: 1,
       };
 
       mockRequest.mockResolvedValue({
@@ -78,7 +73,7 @@ describe('TemplatesAPI', () => {
     it('should list templates with source filter', async () => {
       const mockResponse: ListTemplatesResponse = {
         templates: [],
-        count: 0,
+        nextOffset: 0,
       };
 
       mockRequest.mockResolvedValue({
@@ -101,17 +96,11 @@ describe('TemplatesAPI', () => {
     it('should get a template by ID', async () => {
       const mockTemplate: Template = {
         id: 'template-123',
-        name: 'Test Template',
+        title: 'Test Template',
         description: 'A test template',
-        variables: [
-          {
-            name: 'title',
-            type: 'text',
-            required: true,
-          },
-        ],
-        source: 'synthesia',
-        thumbnailUrl: 'https://example.com/thumb.jpg',
+        variables: [],
+        createdAt: 1672531200,
+        lastUpdatedAt: 1672531200,
       };
 
       mockRequest.mockResolvedValue({
@@ -134,7 +123,7 @@ describe('TemplatesAPI', () => {
     it('should get Synthesia templates', async () => {
       const mockResponse: ListTemplatesResponse = {
         templates: [],
-        count: 0,
+        nextOffset: 0,
       };
 
       mockRequest.mockResolvedValue({

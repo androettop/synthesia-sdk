@@ -28,8 +28,7 @@ describe('SynthesiaUtils', () => {
 
   describe('isValidWebhookEvent', () => {
     it('should validate correct webhook events', () => {
-      expect(SynthesiaUtils.isValidWebhookEvent('video.created')).toBe(true);
-      expect(SynthesiaUtils.isValidWebhookEvent('video.complete')).toBe(true);
+      expect(SynthesiaUtils.isValidWebhookEvent('video.completed')).toBe(true);
       expect(SynthesiaUtils.isValidWebhookEvent('video.failed')).toBe(true);
     });
 

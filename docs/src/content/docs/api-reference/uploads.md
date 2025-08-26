@@ -40,8 +40,7 @@ async uploadAsset(request: UploadAssetRequest): Promise<APIResponse<Asset>>
 ```typescript
 interface UploadAssetRequest {
   file: Buffer | Blob;          // File data
-  filename: string;             // Original filename
-  type: 'audio' | 'image' | 'video'; // Asset type
+  contentType: string;          // MIME type (e.g., 'image/jpeg', 'audio/mpeg')
 }
 ```
 
@@ -55,14 +54,12 @@ const fileBuffer = fs.readFileSync('/path/to/audio.wav');
 
 const response = await synthesia.uploads.uploadAsset({
   file: fileBuffer,
-  filename: 'custom-narration.wav',
-  type: 'audio'
+  contentType: 'audio/wav'
 });
 
 if (response.data) {
   console.log('Asset uploaded:', response.data.id);
-  console.log('Asset URL:', response.data.url);
-  console.log('File size:', response.data.size, 'bytes');
+  console.log('Asset title:', response.data.title);
 }
 ```
 
@@ -73,15 +70,14 @@ if (response.data) {
 Convenience method for uploading audio files for script narration.
 
 ```typescript
-async uploadScriptAudio(audioFile: Buffer | Blob, filename: string): Promise<APIResponse<Asset>>
+async uploadScriptAudio(audioFile: Buffer | Blob): Promise<APIResponse<ScriptAudioAsset>>
 ```
 
 #### Parameters
 
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
-| `audioFile` | `Buffer \| Blob` | ✅ | Audio file data |
-| `filename` | `string` | ✅ | Original filename |
+| `audioFile` | `Buffer \| Blob` | ✅ | Audio file data (MP3 format) |
 
 #### Example
 
@@ -90,22 +86,22 @@ import fs from 'fs';
 
 const audioBuffer = fs.readFileSync('./narration.mp3');
 
-const response = await synthesia.uploads.uploadScriptAudio(
-  audioBuffer,
-  'product-demo-narration.mp3'
-);
+const response = await synthesia.uploads.uploadScriptAudio(audioBuffer);
 
 if (response.data) {
   const assetId = response.data.id;
   
   // Use in video creation
   const videoResponse = await synthesia.videos.createVideo({
-    title: 'Product Demo with Custom Audio',
-    scenes: [{
+    input: [{
+      scriptAudio: assetId, // Use asset ID for custom audio
+      scriptLanguage: 'en-US',
       avatar: 'anna_costume1_cameraA',
-      background: 'office',
-      script: assetId, // Use asset ID instead of text
-    }]
+      background: 'office'
+    }],
+    title: 'Product Demo with Custom Audio',
+    visibility: 'private',
+    aspectRatio: '16:9'
   });
 }
 ```
@@ -117,7 +113,7 @@ if (response.data) {
 Convenience method for uploading image files.
 
 ```typescript
-async uploadImage(imageFile: Buffer | Blob, filename: string): Promise<APIResponse<Asset>>
+async uploadImage(imageFile: Buffer | Blob, contentType: string): Promise<APIResponse<Asset>>
 ```
 
 #### Parameters
@@ -125,7 +121,7 @@ async uploadImage(imageFile: Buffer | Blob, filename: string): Promise<APIRespon
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
 | `imageFile` | `Buffer \| Blob` | ✅ | Image file data |
-| `filename` | `string` | ✅ | Original filename |
+| `contentType` | `string` | ✅ | MIME type (e.g., 'image/jpeg', 'image/png') |
 
 #### Example
 
@@ -134,7 +130,7 @@ const imageBuffer = fs.readFileSync('./company-logo.png');
 
 const response = await synthesia.uploads.uploadImage(
   imageBuffer,
-  'company-logo.png'
+  'image/png'
 );
 
 if (response.data) {
@@ -156,7 +152,7 @@ if (response.data) {
 Convenience method for uploading video files.
 
 ```typescript
-async uploadVideo(videoFile: Buffer | Blob, filename: string): Promise<APIResponse<Asset>>
+async uploadVideo(videoFile: Buffer | Blob, contentType: string): Promise<APIResponse<Asset>>
 ```
 
 #### Parameters
@@ -164,7 +160,7 @@ async uploadVideo(videoFile: Buffer | Blob, filename: string): Promise<APIRespon
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
 | `videoFile` | `Buffer \| Blob` | ✅ | Video file data |
-| `filename` | `string` | ✅ | Original filename |
+| `contentType` | `string` | ✅ | MIME type (e.g., 'video/mp4', 'video/webm') |
 
 #### Example
 
@@ -173,78 +169,24 @@ const videoBuffer = fs.readFileSync('./background-video.mp4');
 
 const response = await synthesia.uploads.uploadVideo(
   videoBuffer,
-  'animated-background.mp4'
+  'video/mp4'
 );
 
 if (response.data) {
   // Use as background in video scene
   const videoResponse = await synthesia.videos.createVideo({
-    title: 'Video with Custom Background',
-    scenes: [{
+    input: [{
+      scriptText: 'Welcome to our presentation!',
       avatar: 'anna_costume1_cameraA',
-      background: response.data.id, // Use uploaded video as background
-      script: 'Welcome to our presentation!'
-    }]
+      background: response.data.id // Use uploaded video as background
+    }],
+    title: 'Video with Custom Background',
+    visibility: 'private',
+    aspectRatio: '16:9'
   });
 }
 ```
 
----
-
-### getAsset()
-
-Retrieve information about an uploaded asset.
-
-```typescript
-async getAsset(assetId: string): Promise<APIResponse<Asset>>
-```
-
-#### Parameters
-
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `assetId` | `string` | ✅ | The unique asset identifier |
-
-#### Example
-
-```typescript
-const response = await synthesia.uploads.getAsset('asset-123');
-
-if (response.data) {
-  const asset = response.data;
-  console.log('Filename:', asset.filename);
-  console.log('Type:', asset.type);
-  console.log('Size:', asset.size, 'bytes');
-  console.log('URL:', asset.url);
-  console.log('Created:', asset.createdAt);
-}
-```
-
----
-
-### deleteAsset()
-
-Permanently delete an uploaded asset.
-
-```typescript
-async deleteAsset(assetId: string): Promise<APIResponse<void>>
-```
-
-#### Parameters
-
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `assetId` | `string` | ✅ | The unique asset identifier |
-
-#### Example
-
-```typescript
-const response = await synthesia.uploads.deleteAsset('asset-123');
-
-if (!response.error) {
-  console.log('Asset deleted successfully');
-}
-```
 
 ## File Upload Examples
 
@@ -274,8 +216,7 @@ async function handleFileUpload(event: Event) {
   
   const response = await synthesia.uploads.uploadAsset({
     file: file,
-    filename: file.name,
-    type: assetType
+    contentType: file.type
   });
   
   if (response.data) {
@@ -317,12 +258,12 @@ function setupDragAndDrop(dropZone: HTMLElement) {
 }
 
 async function uploadFileBasedOnType(file: File) {
-  if (file.type.startsWith('audio/')) {
-    return synthesia.uploads.uploadScriptAudio(file, file.name);
+  if (file.type === 'audio/mpeg') {
+    return synthesia.uploads.uploadScriptAudio(file);
   } else if (file.type.startsWith('image/')) {
-    return synthesia.uploads.uploadImage(file, file.name);
+    return synthesia.uploads.uploadImage(file, file.type);
   } else if (file.type.startsWith('video/')) {
-    return synthesia.uploads.uploadVideo(file, file.name);
+    return synthesia.uploads.uploadVideo(file, file.type);
   } else {
     throw new Error(`Unsupported file type: ${file.type}`);
   }
@@ -391,33 +332,27 @@ uploadWithProgress(file, (progress) => {
 ```typescript
 interface Asset {
   id: string;              // Unique asset identifier
-  filename: string;        // Original filename
-  type: 'audio' | 'image' | 'video'; // Asset type
-  url: string;             // Public URL for the asset
-  createdAt: string;       // ISO timestamp
-  size: number;           // File size in bytes
+  title?: string;          // Asset title/filename
+}
+
+interface ScriptAudioAsset {
+  id: string;              // Unique asset identifier for script audio
 }
 ```
 
 ## Supported File Formats
 
-### Audio Files
-- **MP3** - Most common, good compression
-- **WAV** - Uncompressed, high quality
-- **AAC** - Good compression with quality
-- **OGG** - Open source alternative
+### Audio Files (Script Audio)
+- **MP3** - Required format for script audio uploads (audio/mpeg)
 
 ### Image Files
-- **JPEG/JPG** - Photos and complex images
-- **PNG** - Logos, graphics with transparency
-- **GIF** - Simple animations (limited)
-- **WebP** - Modern format with excellent compression
+- **JPEG/JPG** - Photos and complex images (image/jpeg)
+- **PNG** - Logos, graphics with transparency (image/png)
+- **SVG** - Vector graphics (image/svg+xml)
 
 ### Video Files
-- **MP4** - Most widely supported
-- **MOV** - QuickTime format
-- **AVI** - Older format, larger files
-- **WebM** - Web-optimized format
+- **MP4** - Most widely supported (video/mp4)
+- **WebM** - Web-optimized format (video/webm)
 
 ## File Size Limits
 
@@ -449,8 +384,7 @@ async function optimizeAndUpload(file: File): Promise<APIResponse<Asset>> {
   // Upload the file
   return synthesia.uploads.uploadAsset({
     file: file,
-    filename: file.name,
-    type: assetType
+    contentType: file.type
   });
 }
 ```
@@ -539,12 +473,15 @@ async function createVideoWithCustomAudio(scriptAudioPath: string) {
   
   // Create video using uploaded audio
   const videoResponse = await synthesia.videos.createVideo({
-    title: 'Video with Custom Narration',
-    scenes: [{
+    input: [{
+      scriptAudio: audioResponse.data.id, // Use asset ID for custom audio
+      scriptLanguage: 'en-US',
       avatar: 'anna_costume1_cameraA',
-      background: 'office',
-      script: audioResponse.data.id // Use asset ID instead of text
-    }]
+      background: 'office'
+    }],
+    title: 'Video with Custom Narration',
+    visibility: 'private',
+    aspectRatio: '16:9'
   });
   
   return videoResponse.data?.id;
@@ -559,11 +496,11 @@ async function createBrandedVideo(logoPath: string, backgroundVideoPath: string)
   const [logoResponse, backgroundResponse] = await Promise.all([
     synthesia.uploads.uploadImage(
       fs.readFileSync(logoPath),
-      'company-logo.png'
+      'image/png'
     ),
     synthesia.uploads.uploadVideo(
       fs.readFileSync(backgroundVideoPath),
-      'brand-background.mp4'
+      'video/mp4'
     )
   ]);
   
