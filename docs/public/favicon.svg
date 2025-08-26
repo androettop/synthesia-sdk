@@ -1,0 +1,19 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="favicon-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="32" height="32" rx="6" fill="url(#favicon-gradient)"/>
+  
+  <!-- Video camera icon -->
+  <rect x="6" y="12" width="20" height="12" rx="2" fill="white" opacity="0.9"/>
+  <circle cx="12" cy="18" r="3" fill="url(#favicon-gradient)"/>
+  <circle cx="12" cy="18" r="1.5" fill="white" opacity="0.3"/>
+  
+  <!-- Record indicator -->
+  <circle cx="22" cy="15" r="1.5" fill="#ef4444"/>
+</svg>

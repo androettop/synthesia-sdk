@@ -1,0 +1,114 @@
+---
+title: Synthesia SDK Documentation
+description: Complete TypeScript SDK for the Synthesia API - Create AI-generated videos programmatically.
+template: splash
+hero:
+  tagline: Create AI-generated videos programmatically with TypeScript
+  image:
+    file: ../../assets/hero-image.svg
+  actions:
+    - text: Get Started
+      link: /getting-started/installation/
+      icon: right-arrow
+      variant: primary
+    - text: View on GitHub
+      link: https://github.com/synthesia-io/@androettop/synthesia-sdk
+      icon: external
+      variant: minimal
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+## Features
+
+<CardGrid>
+  <Card title="🎬 Video Creation" >
+    Create AI-generated videos with custom scripts, avatars, and backgrounds
+  </Card>
+  <Card title="📋 Template System" >
+    Use pre-designed templates for scalable video personalization
+  </Card>
+  <Card title="🔔 Real-time Webhooks" >
+    Get instant notifications when videos complete processing
+  </Card>
+  <Card title="📁 Asset Management" >
+    Upload custom audio, images, and videos for your content
+  </Card>
+  <Card title="⚡ TypeScript First" >
+    Full TypeScript support with complete type definitions
+  </Card>
+  <Card title="🛡️ Error Handling" >
+    Robust error handling with retry logic and rate limiting
+  </Card>
+</CardGrid>
+
+## Quick Start
+
+Get up and running in minutes:
+
+```bash
+npm install @androettop/synthesia-sdk
+```
+
+```typescript
+import { Synthesia } from '@androettop/synthesia-sdk';
+
+const synthesia = new Synthesia({
+  apiKey: 'your-api-key-here',
+});
+
+// Create your first video
+const video = await synthesia.videos.createVideo({
+  title: 'My First Video',
+  scriptText: 'Hello, World! This is my first synthetic video!',
+  avatar: 'anna_costume1_cameraA',
+  background: 'green_screen',
+  test: true,
+});
+
+console.log('Video created:', video.data?.id);
+```
+
+## What's Included
+
+<CardGrid>
+  <Card title="Complete API Coverage">
+    Videos, Templates, Webhooks, and Uploads APIs fully implemented
+  </Card>
+  <Card title="Production Ready" >
+    Rate limiting, error handling, and retry logic built-in
+  </Card>
+  <Card title="Developer Experience" >
+    IntelliSense, type safety, and comprehensive documentation
+  </Card>
+</CardGrid>
+
+## Official API Documentation
+
+This SDK documentation is based on the official Synthesia API documentation:
+
+- [Synthesia API Reference](https://docs.synthesia.io/reference) - Complete API reference
+- [API Quickstart](https://docs.synthesia.io/reference/synthesia-api-quickstart) - Getting started guide
+
+Each section includes:
+- ✅ Complete code examples
+- ✅ TypeScript type definitions  
+- ✅ Error handling patterns
+- ✅ Links to official API documentation
+- ✅ Best practices and tips
+
+## Next Steps
+
+Ready to start creating videos? Choose your path:
+
+<CardGrid>
+  <Card title="🚀 Quick Start" >
+    [Jump right in](/getting-started/quickstart/) with a simple example
+  </Card>
+  <Card title="📖 Full Guide">
+    [Start from the beginning](/getting-started/installation/) with installation
+  </Card>
+  <Card title="🔍 API Reference" >
+    [Explore the APIs](/api-reference/videos/) in detail
+  </Card>
+</CardGrid>

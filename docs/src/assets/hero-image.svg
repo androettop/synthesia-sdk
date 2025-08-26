@@ -1,0 +1,41 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="90" fill="url(#gradient)" opacity="0.1"/>
+  
+  <!-- Video camera icon -->
+  <rect x="60" y="80" width="80" height="50" rx="8" fill="url(#gradient)"/>
+  <rect x="65" y="85" width="70" height="40" rx="4" fill="white" opacity="0.9"/>
+  
+  <!-- Camera lens -->
+  <circle cx="85" cy="105" r="15" fill="url(#gradient)"/>
+  <circle cx="85" cy="105" r="10" fill="white" opacity="0.3"/>
+  <circle cx="85" cy="105" r="6" fill="url(#gradient)"/>
+  
+  <!-- Record button -->
+  <circle cx="120" cy="95" r="4" fill="#ef4444"/>
+  
+  <!-- Viewfinder -->
+  <rect x="110" y="105" width="20" height="12" rx="2" fill="white" opacity="0.8"/>
+  <rect x="112" y="107" width="16" height="8" rx="1" fill="url(#gradient)" opacity="0.3"/>
+  
+  <!-- AI sparkles -->
+  <g fill="url(#gradient)" opacity="0.7">
+    <circle cx="45" cy="60" r="2"/>
+    <circle cx="155" cy="55" r="1.5"/>
+    <circle cx="165" cy="140" r="2"/>
+    <circle cx="35" cy="140" r="1.5"/>
+    <circle cx="50" cy="160" r="1"/>
+    <circle cx="150" cy="170" r="1"/>
+  </g>
+  
+  <!-- Play button overlay -->
+  <circle cx="100" cy="140" r="20" fill="url(#gradient)" opacity="0.9"/>
+  <path d="M95 132 L110 140 L95 148 Z" fill="white"/>
+</svg>
