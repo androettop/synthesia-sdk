@@ -40,10 +40,14 @@ const synthesia = new Synthesia({
 
 async function createVideoSafely() {
   const response = await synthesia.videos.createVideo({
+    input: [{
+      scriptText: 'Hello, world!',
+      avatar: 'anna_costume1_cameraA',
+      background: 'office'
+    }],
     title: 'My Video',
-    scriptText: 'Hello, world!',
-    avatar: 'anna_costume1_cameraA',
-    background: 'office',
+    visibility: 'private',
+    aspectRatio: '16:9',
     test: true
   });
 
@@ -66,10 +70,14 @@ async function createVideoSafely() {
 async function createVideoWithTryCatch() {
   try {
     const response = await synthesia.videos.createVideo({
+      input: [{
+        scriptText: 'Hello, world!',
+        avatar: 'anna_costume1_cameraA',
+        background: 'office'
+      }],
       title: 'My Video',
-      scriptText: 'Hello, world!',
-      avatar: 'anna_costume1_cameraA',
-      background: 'office'
+      visibility: 'private',
+      aspectRatio: '16:9'
     });
 
     if (response.error) {
@@ -127,10 +135,14 @@ async function handleAuthFailure() {
 ```typescript
 async function handleValidationErrors() {
   const response = await synthesia.videos.createVideo({
+    input: [{
+      scriptText: 'Hello world',
+      avatar: 'invalid_avatar', // Invalid avatar ID
+      background: 'office'
+    }],
     title: '', // Empty title will cause validation error
-    scriptText: 'Hello world',
-    avatar: 'invalid_avatar', // Invalid avatar ID
-    background: 'office'
+    visibility: 'private',
+    aspectRatio: '16:9'
   });
   
   if (response.error?.statusCode === 400) {
@@ -159,10 +171,14 @@ async function handleValidationErrors() {
 ```typescript
 async function handleRateLimiting() {
   const response = await synthesia.videos.createVideo({
+    input: [{
+      scriptText: 'Hello world',
+      avatar: 'anna_costume1_cameraA',
+      background: 'office'
+    }],
     title: 'My Video',
-    scriptText: 'Hello world',
-    avatar: 'anna_costume1_cameraA',
-    background: 'office'
+    visibility: 'private',
+    aspectRatio: '16:9'
   });
   
   if (response.error?.statusCode === 429) {
@@ -187,10 +203,14 @@ async function handleRateLimiting() {
 ```typescript
 async function handleInsufficientCredits() {
   const response = await synthesia.videos.createVideo({
+    input: [{
+      scriptText: 'Hello world',
+      avatar: 'anna_costume1_cameraA',
+      background: 'office'
+    }],
     title: 'My Video',
-    scriptText: 'Hello world',
-    avatar: 'anna_costume1_cameraA',
-    background: 'office',
+    visibility: 'private',
+    aspectRatio: '16:9',
     test: false // Production video requires credits
   });
   
@@ -205,10 +225,14 @@ async function handleInsufficientCredits() {
     console.log('🔄 Falling back to test mode...');
     
     const testResponse = await synthesia.videos.createVideo({
+      input: [{
+        scriptText: 'Hello world',
+        avatar: 'anna_costume1_cameraA',
+        background: 'office'
+      }],
       title: 'My Video (Test)',
-      scriptText: 'Hello world',
-      avatar: 'anna_costume1_cameraA',
-      background: 'office',
+      visibility: 'private',
+      aspectRatio: '16:9',
       test: true // Free test video
     });
     
@@ -224,10 +248,14 @@ async function handleInsufficientCredits() {
 ```typescript
 async function handleServerErrors() {
   const response = await synthesia.videos.createVideo({
+    input: [{
+      scriptText: 'Hello world',
+      avatar: 'anna_costume1_cameraA',
+      background: 'office'
+    }],
     title: 'My Video',
-    scriptText: 'Hello world',
-    avatar: 'anna_costume1_cameraA',
-    background: 'office'
+    visibility: 'private',
+    aspectRatio: '16:9'
   });
   
   if (response.error?.statusCode >= 500) {
@@ -237,10 +265,14 @@ async function handleServerErrors() {
     // Implement exponential backoff retry
     return retryWithBackoff(() => 
       synthesia.videos.createVideo({
+        input: [{
+          scriptText: 'Hello world',
+          avatar: 'anna_costume1_cameraA',
+          background: 'office'
+        }],
         title: 'My Video',
-        scriptText: 'Hello world',
-        avatar: 'anna_costume1_cameraA',
-        background: 'office'
+        visibility: 'private',
+        aspectRatio: '16:9'
       })
     );
   }
@@ -317,10 +349,14 @@ class RateLimitError extends SynthesiaAPIError {
 async function createVideoWithHandler() {
   try {
     const response = await synthesia.videos.createVideo({
+      input: [{
+        scriptText: 'Hello world',
+        avatar: 'anna_costume1_cameraA',
+        background: 'office'
+      }],
       title: 'My Video',
-      scriptText: 'Hello world',
-      avatar: 'anna_costume1_cameraA',
-      background: 'office'
+      visibility: 'private',
+      aspectRatio: '16:9'
     });
     
     const video = await SynthesiaErrorHandler.handleResponse(response);
@@ -389,10 +425,14 @@ async function retryWithBackoff<T>(
 // Usage
 const video = await retryWithBackoff(() => 
   synthesia.videos.createVideo({
+    input: [{
+      scriptText: 'Hello world',
+      avatar: 'anna_costume1_cameraA',
+      background: 'office'
+    }],
     title: 'My Video',
-    scriptText: 'Hello world',
-    avatar: 'anna_costume1_cameraA',
-    background: 'office'
+    visibility: 'private',
+    aspectRatio: '16:9'
   })
 );
 ```
@@ -458,10 +498,14 @@ async function createVideoWithCircuitBreaker() {
   try {
     return await circuitBreaker.execute(() =>
       synthesia.videos.createVideo({
+        input: [{
+          scriptText: 'Hello world',
+          avatar: 'anna_costume1_cameraA',
+          background: 'office'
+        }],
         title: 'My Video',
-        scriptText: 'Hello world',
-        avatar: 'anna_costume1_cameraA',
-        background: 'office'
+        visibility: 'private',
+        aspectRatio: '16:9'
       })
     );
   } catch (error) {
@@ -528,10 +572,14 @@ function getUserFriendlyError(statusCode: number, originalMessage: string) {
 async function createVideoForUser() {
   try {
     const response = await synthesia.videos.createVideo({
+      input: [{
+        scriptText: 'Hello from user interface',
+        avatar: 'anna_costume1_cameraA',
+        background: 'office'
+      }],
       title: 'User Video',
-      scriptText: 'Hello from user interface',
-      avatar: 'anna_costume1_cameraA',
-      background: 'office'
+      visibility: 'private',
+      aspectRatio: '16:9'
     });
     
     if (response.error) {
@@ -695,10 +743,14 @@ class VideoCreationProcess {
 const videoProcess = new VideoCreationProcess();
 
 const video = await videoProcess.createVideo({
+  input: [{
+    scriptText: 'Hello world',
+    avatar: 'anna_costume1_cameraA',
+    background: 'office'
+  }],
   title: 'My Video',
-  scriptText: 'Hello world',
-  avatar: 'anna_costume1_cameraA',
-  background: 'office'
+  visibility: 'private',
+  aspectRatio: '16:9'
 }, (status) => {
   console.log('Progress:', status);
 });
@@ -784,10 +836,14 @@ const errorTracker = new ErrorTracker();
 async function createVideoWithTracking() {
   try {
     const response = await synthesia.videos.createVideo({
+      input: [{
+        scriptText: 'Hello world',
+        avatar: 'anna_costume1_cameraA',
+        background: 'office'
+      }],
       title: 'My Video',
-      scriptText: 'Hello world',
-      avatar: 'anna_costume1_cameraA',
-      background: 'office'
+      visibility: 'private',
+      aspectRatio: '16:9'
     });
     
     if (response.error) {

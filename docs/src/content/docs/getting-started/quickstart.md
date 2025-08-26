@@ -36,11 +36,15 @@ const synthesia = new Synthesia({
 async function createFirstVideo() {
   try {
     const result = await synthesia.videos.createVideo({
+      input: [{
+        scriptText: 'Hello, World! This is my first synthetic video, made with the Synthesia API!',
+        avatar: 'anna_costume1_cameraA',
+        background: 'green_screen'
+      }],
       test: true, // Use test mode for development
       title: 'My first Synthetic video',
-      scriptText: 'Hello, World! This is my first synthetic video, made with the Synthesia API!',
-      avatar: 'anna_costume1_cameraA',
-      background: 'green_screen',
+      visibility: 'private',
+      aspectRatio: '16:9'
     });
 
     if (result.error) {
@@ -151,11 +155,15 @@ async function main() {
     // 1. Create video
     console.log('🎬 Creating video...');
     const createResult = await synthesia.videos.createVideo({
+      input: [{
+        scriptText: 'Hello, World! This is my first synthetic video, made with the Synthesia API!',
+        avatar: 'anna_costume1_cameraA',
+        background: 'green_screen'
+      }],
       test: true,
       title: 'My first Synthetic video',
-      scriptText: 'Hello, World! This is my first synthetic video, made with the Synthesia API!',
-      avatar: 'anna_costume1_cameraA',
-      background: 'green_screen',
+      visibility: 'private',
+      aspectRatio: '16:9'
     });
 
     if (createResult.error) {

@@ -22,12 +22,15 @@ const synthesia = new Synthesia({
 
 async function createFirstVideo() {
   const response = await synthesia.videos.createVideo({
+    input: [{
+      scriptText: 'Hello! This is my first AI-generated video using Synthesia.',
+      avatar: 'anna_costume1_cameraA',
+      background: 'green_screen'
+    }],
     test: true, // Creates a watermarked test video
     title: 'My First Synthesia Video',
-    scriptText: 'Hello! This is my first AI-generated video using Synthesia.',
-    avatar: 'anna_costume1_cameraA',
-    background: 'green_screen',
-    visibility: 'private'
+    visibility: 'private',
+    aspectRatio: '16:9'
   });
 
   if (response.data) {
@@ -63,17 +66,22 @@ const synthesia = new Synthesia({
 
 ```typescript
 const response = await synthesia.videos.createVideo({
-  // Essential parameters
-  title: 'Welcome Video',
-  scriptText: 'Welcome to our platform! We are excited to have you here.',
+  input: [{
+    // Essential parameters
+    scriptText: 'Welcome to our platform! We are excited to have you here.',
+    
+    // Avatar and background selection
+    avatar: 'anna_costume1_cameraA',
+    background: 'office'
+  }],
   
-  // Avatar and background selection
-  avatar: 'anna_costume1_cameraA',
-  background: 'office',
+  // Video metadata
+  title: 'Welcome Video',
+  visibility: 'private', // or 'public'
+  aspectRatio: '16:9',
   
   // Development settings
-  test: true,          // Remove for production videos
-  visibility: 'private' // or 'public'
+  test: true          // Remove for production videos
 });
 ```
 
@@ -131,16 +139,19 @@ async function createAndWaitForVideo() {
     // Create video
     console.log('Creating video...');
     const response = await synthesia.videos.createVideo({
+      input: [{
+        scriptText: `
+          Hello and welcome! This is my first AI-generated video.
+          I'm excited to explore the possibilities of synthetic media.
+          Thank you for watching!
+        `,
+        avatar: 'anna_costume1_cameraA',
+        background: 'green_screen'
+      }],
       test: true,
       title: 'My First Video',
-      scriptText: `
-        Hello and welcome! This is my first AI-generated video.
-        I'm excited to explore the possibilities of synthetic media.
-        Thank you for watching!
-      `,
-      avatar: 'anna_costume1_cameraA',
-      background: 'green_screen',
-      visibility: 'private'
+      visibility: 'private',
+      aspectRatio: '16:9'
     });
 
     if (!response.data) {
@@ -240,20 +251,38 @@ createAndWaitForVideo()
 ```typescript
 // Professional presentation
 {
-  avatar: 'anna_costume1_cameraA',
-  background: 'office'
+  input: [{
+    scriptText: 'Your script here',
+    avatar: 'anna_costume1_cameraA',
+    background: 'office'
+  }],
+  title: 'Professional Video',
+  visibility: 'private',
+  aspectRatio: '16:9'
 }
 
 // Casual explainer video
 {
-  avatar: 'james_costume2_cameraA', 
-  background: 'white_studio'
+  input: [{
+    scriptText: 'Your script here',
+    avatar: 'james_costume2_cameraA', 
+    background: 'white_studio'
+  }],
+  title: 'Casual Video',
+  visibility: 'private',
+  aspectRatio: '16:9'
 }
 
 // Educational content
 {
-  avatar: 'sophia_costume1_cameraA',
-  background: 'library'
+  input: [{
+    scriptText: 'Your script here',
+    avatar: 'sophia_costume1_cameraA',
+    background: 'library'
+  }],
+  title: 'Educational Video',
+  visibility: 'private',
+  aspectRatio: '16:9'
 }
 ```
 
@@ -261,16 +290,17 @@ createAndWaitForVideo()
 
 ```typescript
 const response = await synthesia.videos.createVideo({
-  title: 'Custom Voice Settings',
-  scenes: [{
+  input: [{
+    scriptText: 'This video demonstrates custom voice settings.',
     avatar: 'anna_costume1_cameraA',
     background: 'office',
-    script: 'This video demonstrates custom voice settings.',
-    voiceSettings: {
-      speed: 1.1,    // Slightly faster (0.5 - 2.0)
-      pitch: 0.95    // Slightly lower pitch (0.5 - 2.0)
+    avatarSettings: {
+      voice: 'anna_costume1_cameraA' // Use specific voice
     }
   }],
+  title: 'Custom Voice Settings',
+  visibility: 'private',
+  aspectRatio: '16:9',
   test: true
 });
 ```
@@ -281,10 +311,14 @@ const response = await synthesia.videos.createVideo({
 async function createVideoSafely() {
   try {
     const response = await synthesia.videos.createVideo({
+      input: [{
+        scriptText: 'Hello world!',
+        avatar: 'anna_costume1_cameraA',
+        background: 'office'
+      }],
       title: 'Test Video',
-      scriptText: 'Hello world!',
-      avatar: 'anna_costume1_cameraA',
-      background: 'office',
+      visibility: 'private',
+      aspectRatio: '16:9',
       test: true
     });
 
@@ -329,11 +363,15 @@ async function createVideoSafely() {
 ```typescript
 // Test videos are watermarked and limited to 30 seconds
 const testVideo = await synthesia.videos.createVideo({
+  input: [{
+    scriptText: 'Testing video creation...',
+    avatar: 'anna_costume1_cameraA',
+    background: 'green_screen'
+  }],
   test: true,           // ✅ Always use for development
   title: 'Development Test',
-  scriptText: 'Testing video creation...',
-  avatar: 'anna_costume1_cameraA',
-  background: 'green_screen'
+  visibility: 'private',
+  aspectRatio: '16:9'
 });
 ```
 
@@ -342,12 +380,15 @@ const testVideo = await synthesia.videos.createVideo({
 ```typescript
 // Production videos count against your quota
 const productionVideo = await synthesia.videos.createVideo({
+  input: [{
+    scriptText: 'This is a production-ready video.',
+    avatar: 'anna_costume1_cameraA',
+    background: 'office'
+  }],
   test: false,          // or omit the test parameter
   title: 'Production Video',
-  scriptText: 'This is a production-ready video.',
-  avatar: 'anna_costume1_cameraA',
-  background: 'office',
-  visibility: 'public'  // Can be shared publicly
+  visibility: 'public',  // Can be shared publicly
+  aspectRatio: '16:9'
 });
 ```
 
@@ -360,19 +401,21 @@ const longScript = "Very long script that exceeds the limits...";
 
 // ✅ Solution: Break into scenes or shorten
 const response = await synthesia.videos.createVideo({
-  title: 'Multi-Scene Video',
-  scenes: [
+  input: [
     {
+      scriptText: 'First part of the content...',
       avatar: 'anna_costume1_cameraA',
-      background: 'office',
-      script: 'First part of the content...'
+      background: 'office'
     },
     {
+      scriptText: 'Second part of the content...',
       avatar: 'anna_costume1_cameraA', 
-      background: 'office',
-      script: 'Second part of the content...'
+      background: 'office'
     }
-  ]
+  ],
+  title: 'Multi-Scene Video',
+  visibility: 'private',
+  aspectRatio: '16:9'
 });
 ```
 

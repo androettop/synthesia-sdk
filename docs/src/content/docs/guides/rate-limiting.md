@@ -70,10 +70,14 @@ async function checkRateLimitStatus() {
 ```typescript
 async function createVideoWithRateLimit() {
   const response = await synthesia.videos.createVideo({
+    input: [{
+      scriptText: 'Testing rate limit handling',
+      avatar: 'anna_costume1_cameraA',
+      background: 'office'
+    }],
     title: 'Rate Limited Video',
-    scriptText: 'Testing rate limit handling',
-    avatar: 'anna_costume1_cameraA',
-    background: 'office',
+    visibility: 'private',
+    aspectRatio: '16:9',
     test: true
   });
   
@@ -154,10 +158,14 @@ async function createVideoWithTokenBucket() {
   await rateLimiter.consume();
   
   const response = await synthesia.videos.createVideo({
+    input: [{
+      scriptText: 'Using token bucket rate limiting',
+      avatar: 'anna_costume1_cameraA',
+      background: 'office'
+    }],
     title: 'Token Bucket Video',
-    scriptText: 'Using token bucket rate limiting',
-    avatar: 'anna_costume1_cameraA',
-    background: 'office',
+    visibility: 'private',
+    aspectRatio: '16:9',
     test: true
   });
   
@@ -324,9 +332,14 @@ const results = await processBatchWithRateLimit(
   videoConfigs,
   async (config) => {
     const response = await synthesia.videos.createVideo({
-      ...config,
-      avatar: 'anna_costume1_cameraA',
-      background: 'office',
+      input: [{
+        scriptText: config.scriptText,
+        avatar: 'anna_costume1_cameraA',
+        background: 'office'
+      }],
+      title: config.title,
+      visibility: 'private',
+      aspectRatio: '16:9',
       test: true
     });
     
@@ -425,10 +438,14 @@ async function monitoredApiCall<T>(apiCall: () => Promise<T>): Promise<T> {
 // Usage
 const video = await monitoredApiCall(() =>
   synthesia.videos.createVideo({
+    input: [{
+      scriptText: 'This request is being monitored',
+      avatar: 'anna_costume1_cameraA',
+      background: 'office'
+    }],
     title: 'Monitored Video',
-    scriptText: 'This request is being monitored',
-    avatar: 'anna_costume1_cameraA',
-    background: 'office',
+    visibility: 'private',
+    aspectRatio: '16:9',
     test: true
   })
 );
@@ -619,10 +636,14 @@ async function respectfulApiCall() {
   
   // Make API call
   return synthesia.videos.createVideo({
+    input: [{
+      scriptText: 'Respecting rate limits',
+      avatar: 'anna_costume1_cameraA',
+      background: 'office'
+    }],
     title: 'Respectful Video',
-    scriptText: 'Respecting rate limits',
-    avatar: 'anna_costume1_cameraA',
-    background: 'office',
+    visibility: 'private',
+    aspectRatio: '16:9',
     test: true
   });
 }

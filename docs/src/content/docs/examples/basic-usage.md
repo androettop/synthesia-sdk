@@ -28,12 +28,15 @@ const synthesia = new Synthesia({
 ```typescript
 async function createSimpleVideo() {
   const response = await synthesia.videos.createVideo({
+    input: [{
+      scriptText: 'Hello! Welcome to my first AI-generated video.',
+      avatar: 'anna_costume1_cameraA',
+      background: 'office'
+    }],
     test: true, // Remove for production videos
     title: 'My First Video',
-    scriptText: 'Hello! Welcome to my first AI-generated video.',
-    avatar: 'anna_costume1_cameraA',
-    background: 'office',
-    visibility: 'private'
+    visibility: 'private',
+    aspectRatio: '16:9'
   });
 
   if (response.data) {
@@ -131,19 +134,27 @@ const avatars = {
 async function createWithDifferentAvatars() {
   // Professional woman
   const video1 = await synthesia.videos.createVideo({
+    input: [{
+      scriptText: 'Welcome to our quarterly business review.',
+      avatar: avatars.professional.anna,
+      background: 'office'
+    }],
     title: 'Professional Presentation',
-    scriptText: 'Welcome to our quarterly business review.',
-    avatar: avatars.professional.anna,
-    background: 'office',
+    visibility: 'private',
+    aspectRatio: '16:9',
     test: true
   });
 
   // Casual man
   const video2 = await synthesia.videos.createVideo({
-    title: 'Casual Tutorial', 
-    scriptText: 'Hey there! Let me show you how this works.',
-    avatar: avatars.casual.james,
-    background: 'white_studio',
+    input: [{
+      scriptText: 'Hey there! Let me show you how this works.',
+      avatar: avatars.casual.james,
+      background: 'white_studio'
+    }],
+    title: 'Casual Tutorial',
+    visibility: 'private',
+    aspectRatio: '16:9',
     test: true
   });
 
@@ -167,26 +178,38 @@ async function createWithDifferentBackgrounds() {
   
   const videos = await Promise.all([
     synthesia.videos.createVideo({
+      input: [{
+        scriptText: script,
+        avatar: 'anna_costume1_cameraA',
+        background: backgrounds.studio
+      }],
       title: 'Studio Background',
-      scriptText: script,
-      avatar: 'anna_costume1_cameraA',
-      background: backgrounds.studio,
+      visibility: 'private',
+      aspectRatio: '16:9',
       test: true
     }),
     
     synthesia.videos.createVideo({
+      input: [{
+        scriptText: script,
+        avatar: 'anna_costume1_cameraA',
+        background: backgrounds.office
+      }],
       title: 'Office Background',
-      scriptText: script,
-      avatar: 'anna_costume1_cameraA', 
-      background: backgrounds.office,
+      visibility: 'private',
+      aspectRatio: '16:9',
       test: true
     }),
     
     synthesia.videos.createVideo({
+      input: [{
+        scriptText: script,
+        avatar: 'anna_costume1_cameraA',
+        background: backgrounds.library
+      }],
       title: 'Library Background',
-      scriptText: script,
-      avatar: 'anna_costume1_cameraA',
-      background: backgrounds.library,
+      visibility: 'private',
+      aspectRatio: '16:9',
       test: true
     })
   ]);
@@ -202,29 +225,31 @@ async function createWithDifferentBackgrounds() {
 ```typescript
 async function createMultiSceneVideo() {
   const response = await synthesia.videos.createVideo({
-    title: 'Multi-Scene Presentation',
-    scenes: [
+    input: [
       {
+        scriptText: 'Welcome to our presentation. Let me introduce the topics we will cover today.',
         avatar: 'anna_costume1_cameraA',
-        background: 'office',
-        script: 'Welcome to our presentation. Let me introduce the topics we will cover today.'
+        background: 'office'
       },
       {
+        scriptText: 'First, we will discuss the current market situation and our analysis.',
         avatar: 'james_costume1_cameraA',
-        background: 'white_studio', 
-        script: 'First, we will discuss the current market situation and our analysis.'
+        background: 'white_studio'
       },
       {
+        scriptText: 'Next, I will present our strategy and recommendations for moving forward.',
         avatar: 'anna_costume1_cameraA',
-        background: 'office',
-        script: 'Next, I will present our strategy and recommendations for moving forward.'
+        background: 'office'
       },
       {
+        scriptText: 'Finally, we will review the timeline and next steps for implementation.',
         avatar: 'james_costume1_cameraA',
-        background: 'modern_office',
-        script: 'Finally, we will review the timeline and next steps for implementation.'
+        background: 'modern_office'
       }
     ],
+    title: 'Multi-Scene Presentation',
+    visibility: 'private',
+    aspectRatio: '16:9',
     test: true
   });
 
@@ -237,36 +262,35 @@ async function createMultiSceneVideo() {
 ```typescript
 async function createWithVoiceSettings() {
   const response = await synthesia.videos.createVideo({
-    title: 'Voice Settings Demo',
-    scenes: [
+    input: [
       {
+        scriptText: 'This is the normal speaking pace and tone.',
         avatar: 'anna_costume1_cameraA',
         background: 'office',
-        script: 'This is the normal speaking pace and tone.',
-        voiceSettings: {
-          speed: 1.0,
-          pitch: 1.0
+        avatarSettings: {
+          voice: 'anna_costume1_cameraA'
         }
       },
       {
+        scriptText: 'Now I am speaking more slowly and with a slightly lower pitch.',
         avatar: 'anna_costume1_cameraA',
-        background: 'office', 
-        script: 'Now I am speaking more slowly and with a slightly lower pitch.',
-        voiceSettings: {
-          speed: 0.8,
-          pitch: 0.9
+        background: 'office',
+        avatarSettings: {
+          voice: 'anna_costume1_cameraA'
         }
       },
       {
+        scriptText: 'And here I am speaking faster with a higher pitch for emphasis!',
         avatar: 'anna_costume1_cameraA',
         background: 'office',
-        script: 'And here I am speaking faster with a higher pitch for emphasis!',
-        voiceSettings: {
-          speed: 1.3,
-          pitch: 1.1
+        avatarSettings: {
+          voice: 'anna_costume1_cameraA'
         }
       }
     ],
+    title: 'Voice Settings Demo',
+    visibility: 'private',
+    aspectRatio: '16:9',
     test: true
   });
 
@@ -435,10 +459,14 @@ async function createFromTemplate() {
 async function createVideoSafely() {
   try {
     const response = await synthesia.videos.createVideo({
+      input: [{
+        scriptText: 'This demonstrates error handling.',
+        avatar: 'anna_costume1_cameraA',
+        background: 'office'
+      }],
       title: 'Safe Video Creation',
-      scriptText: 'This demonstrates error handling.',
-      avatar: 'anna_costume1_cameraA',
-      background: 'office',
+      visibility: 'private',
+      aspectRatio: '16:9',
       test: true
     });
 
@@ -528,16 +556,19 @@ async function completeVideoWorkflow() {
     // Step 1: Create video
     console.log('1️⃣ Creating video...');
     const createResponse = await synthesia.videos.createVideo({
+      input: [{
+        scriptText: `
+          Hello and welcome to this complete workflow demonstration.
+          This video shows how to create, monitor, and manage videos using the Synthesia SDK.
+          Thank you for watching!
+        `,
+        avatar: 'anna_costume1_cameraA',
+        background: 'office'
+      }],
       title: 'Complete Workflow Demo',
-      scriptText: `
-        Hello and welcome to this complete workflow demonstration.
-        This video shows how to create, monitor, and manage videos using the Synthesia SDK.
-        Thank you for watching!
-      `,
-      avatar: 'anna_costume1_cameraA',
-      background: 'office',
-      test: true,
-      visibility: 'private'
+      visibility: 'private',
+      aspectRatio: '16:9',
+      test: true
     });
 
     if (!createResponse.data) {
@@ -641,9 +672,15 @@ const synthesia = new Synthesia({
 
 async function createDevVideo(title: string, script: string) {
   return synthesia.videos.createVideo({
+    input: [{
+      scriptText: script,
+      avatar: developmentConfig.synthesia.defaultSettings.avatar,
+      background: developmentConfig.synthesia.defaultSettings.background
+    }],
     title,
-    scriptText: script,
-    ...developmentConfig.synthesia.defaultSettings
+    visibility: developmentConfig.synthesia.defaultSettings.visibility,
+    aspectRatio: '16:9',
+    test: developmentConfig.synthesia.defaultSettings.test
   });
 }
 ```
