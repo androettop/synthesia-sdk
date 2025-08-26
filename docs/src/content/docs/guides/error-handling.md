@@ -823,7 +823,7 @@ async function createVideoWithTracking() {
 
 ## Next Steps
 
-- [Learn about rate limiting](./rate-limiting.md)
-- [Implement webhooks for reliable notifications](./webhooks.md)
-- [Explore advanced examples](../examples/error-handling-examples.md)
-- [API Reference](../api-reference/)
+- [Learn about rate limiting](/synthesia-sdk/guides/rate-limiting/)
+- [Implement webhooks for reliable notifications](/synthesia-sdk/guides/webhooks/)
+- [Explore advanced examples](/synthesia-sdk/examples/error-handling-examples/)
+- [API Reference](/synthesia-sdk/api-reference/)

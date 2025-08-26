@@ -705,7 +705,7 @@ async function runWebhookTests() {
 
 ## Next Steps
 
-- [Set up webhook endpoints](../guides/webhooks.md)
-- [Learn about video lifecycle](../guides/video-lifecycle.md)
-- [Explore webhook examples](../examples/webhook-integrations.md)
-- [Read the Webhooks API reference](../api-reference/webhooks.md)
+- [Set up webhook endpoints](/synthesia-sdk/guides/webhooks/)
+- [Learn about video lifecycle](/synthesia-sdk/guides/video-lifecycle/)
+- [Explore webhook examples](/synthesia-sdk/examples/webhook-integrations/)
+- [Read the Webhooks API reference](/synthesia-sdk/api-reference/webhooks/)

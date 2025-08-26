@@ -463,6 +463,6 @@ async function createLessonVideo(lesson: {
 
 ## Next Steps
 
-- [Create videos using templates](../guides/templates.md)
-- [Learn about the Videos API](./videos.md)
-- [Explore batch processing examples](../examples/advanced-usage.md)
+- [Create videos using templates](/synthesia-sdk/guides/templates/)
+- [Learn about the Videos API](/synthesia-sdk/api-reference/videos/)
+- [Explore batch processing examples](/synthesia-sdk/examples/advanced-usage/)

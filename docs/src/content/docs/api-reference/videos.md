@@ -452,6 +452,6 @@ try {
 
 ## Next Steps
 
-- [Learn about Templates API](./templates.md)
-- [Set up Webhooks](./webhooks.md)
-- [Explore advanced examples](../examples/advanced-usage.md)
+- [Learn about Templates API](/synthesia-sdk/api-reference/templates/)
+- [Set up Webhooks](/synthesia-sdk/api-reference/webhooks/)
+- [Explore advanced examples](/synthesia-sdk/examples/advanced-usage/)

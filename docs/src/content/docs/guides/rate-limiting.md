@@ -822,7 +822,7 @@ async function debugRateLimit() {
 
 ## Next Steps
 
-- [Implement webhooks to reduce API polling](./webhooks.md)
-- [Learn about error handling strategies](./error-handling.md)
-- [Explore batch processing examples](../examples/batch-processing.md)
-- [API Reference](../api-reference/)
+- [Implement webhooks to reduce API polling](/synthesia-sdk/guides/webhooks/)
+- [Learn about error handling strategies](/synthesia-sdk/guides/error-handling/)
+- [Explore batch processing examples](/synthesia-sdk/examples/batch-processing/)
+- [API Reference](/synthesia-sdk/api-reference/)

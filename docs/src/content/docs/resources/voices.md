@@ -703,7 +703,7 @@ if (!validation.isValid) {
 
 ## Next Steps
 
-- [Explore avatar options](./avatars.md)
-- [Learn about webhook events](./webhook-events.md)
-- [See voice examples in action](../examples/voice-showcase.md)
-- [Read the API reference](../api-reference/videos.md)
+- [Explore avatar options](/synthesia-sdk/resources/avatars/)
+- [Learn about webhook events](/synthesia-sdk/resources/webhook-events/)
+- [See voice examples in action](/synthesia-sdk/examples/voice-showcase/)
+- [Read the API reference](/synthesia-sdk/api-reference/videos/)

@@ -468,7 +468,7 @@ async function getAvailableAvatars() {
 
 ## Next Steps
 
-- [Explore background options](./backgrounds.md)
-- [Learn about voice settings](./voices.md)
-- [See avatar examples in action](../examples/avatar-showcase.md)
-- [Read the Videos API reference](../api-reference/videos.md)
+- [Explore background options](/synthesia-sdk/resources/backgrounds/)
+- [Learn about voice settings](/synthesia-sdk/resources/voices/)
+- [See avatar examples in action](/synthesia-sdk/examples/avatar-showcase/)
+- [Read the Videos API reference](/synthesia-sdk/api-reference/videos/)

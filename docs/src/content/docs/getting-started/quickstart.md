@@ -230,10 +230,10 @@ async function setupWebhook() {
 
 Now that you've created your first video, explore more features:
 
-- [🎭 Working with Templates](../guides/templates.md)
-- [🔗 Setting Up Webhooks](../guides/webhooks.md)
-- [📤 Uploading Assets](../api-reference/uploads.md)
-- [🎯 Advanced Examples](../examples/advanced-usage.md)
+- [🎭 Working with Templates](/synthesia-sdk/guides/templates/)
+- [🔗 Setting Up Webhooks](/synthesia-sdk/guides/webhooks/)
+- [📤 Uploading Assets](/synthesia-sdk/api-reference/uploads/)
+- [🎯 Advanced Examples](/synthesia-sdk/examples/advanced-usage/)
 
 ## 🔗 Official Documentation
 

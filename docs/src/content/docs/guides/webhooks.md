@@ -758,7 +758,7 @@ processedDeliveries.add(deliveryId);
 
 ## Next Steps
 
-- [Implement error handling patterns](./error-handling.md)
-- [Learn about rate limiting](./rate-limiting.md)
-- [Explore webhook examples](../examples/webhook-integrations.md)
-- [API Reference: Webhooks](../api-reference/webhooks.md)
+- [Implement error handling patterns](/synthesia-sdk/guides/error-handling/)
+- [Learn about rate limiting](/synthesia-sdk/guides/rate-limiting/)
+- [Explore webhook examples](/synthesia-sdk/examples/webhook-integrations/)
+- [API Reference: Webhooks](/synthesia-sdk/api-reference/webhooks/)

@@ -612,6 +612,6 @@ try {
 
 ## Next Steps
 
-- [Learn about using assets in videos](../guides/custom-assets.md)
-- [Explore template customization](../guides/templates.md)
-- [See upload examples](../examples/asset-management.md)
+- [Learn about using assets in videos](/synthesia-sdk/guides/custom-assets/)
+- [Explore template customization](/synthesia-sdk/guides/templates/)
+- [See upload examples](/synthesia-sdk/examples/asset-management/)

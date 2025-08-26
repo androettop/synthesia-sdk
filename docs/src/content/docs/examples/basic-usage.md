@@ -671,7 +671,7 @@ export const productionConfig = {
 
 ## Next Steps
 
-- [Explore advanced examples](./advanced-usage.md)
-- [Learn about webhook integration](./webhook-integrations.md) 
-- [See template examples](./template-examples.md)
-- [Read the API reference](../api-reference/)
+- [Explore advanced examples](/synthesia-sdk/examples/advanced-usage/)
+- [Learn about webhook integration](/synthesia-sdk/examples/webhook-integrations/) 
+- [See template examples](/synthesia-sdk/examples/template-examples/)
+- [Read the API reference](/synthesia-sdk/api-reference/)

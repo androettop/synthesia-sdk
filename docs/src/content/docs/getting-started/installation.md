@@ -141,9 +141,9 @@ testConnection();
 
 ## Next Steps
 
-- [📖 Follow the Quickstart Guide](./quickstart.md)
-- [🔐 Learn about Authentication](./authentication.md)
-- [🎥 Create Your First Video](../guides/first-video.md)
+- [📖 Follow the Quickstart Guide](/synthesia-sdk/getting-started/quickstart/)
+- [🔐 Learn about Authentication](/synthesia-sdk/getting-started/authentication/)
+- [🎥 Create Your First Video](/synthesia-sdk/guides/first-video/)
 
 ## Official Documentation
 

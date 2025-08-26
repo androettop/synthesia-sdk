@@ -591,6 +591,6 @@ try {
 
 ## Next Steps
 
-- [Set up webhook handling](../guides/webhooks.md)
-- [Learn about video status management](../guides/video-lifecycle.md)
-- [Explore webhook examples](../examples/webhook-integrations.md)
+- [Set up webhook handling](/synthesia-sdk/guides/webhooks/)
+- [Learn about video status management](/synthesia-sdk/guides/video-lifecycle/)
+- [Explore webhook examples](/synthesia-sdk/examples/webhook-integrations/)

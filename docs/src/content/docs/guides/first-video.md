@@ -405,10 +405,10 @@ const videoId = response.data!.id; // Safe to use
 
 Now that you've created your first video, explore these advanced features:
 
-- [Working with Templates](./templates.md) - Use pre-designed templates
-- [Setting Up Webhooks](./webhooks.md) - Get notified when videos complete
-- [Multi-Scene Videos](../examples/advanced-usage.md) - Create complex videos
-- [Custom Assets](./custom-assets.md) - Upload your own images and audio
+- [Working with Templates](/synthesia-sdk/guides/templates/) - Use pre-designed templates
+- [Setting Up Webhooks](/synthesia-sdk/guides/webhooks/) - Get notified when videos complete
+- [Multi-Scene Videos](/synthesia-sdk/examples/advanced-usage/) - Create complex videos
+- [Custom Assets](/synthesia-sdk/guides/custom-assets/) - Upload your own images and audio
 
 ## Troubleshooting
 
@@ -431,7 +431,7 @@ Now that you've created your first video, explore these advanced features:
 
 ## Resources
 
-- [API Reference: Videos](../api-reference/videos.md)
+- [API Reference: Videos](/synthesia-sdk/api-reference/videos/)
 - [Official Synthesia Documentation](https://docs.synthesia.io/reference)
-- [Avatar Gallery](../resources/avatars.md)
-- [Background Options](../resources/backgrounds.md)
+- [Avatar Gallery](/synthesia-sdk/resources/avatars/)
+- [Background Options](/synthesia-sdk/resources/backgrounds/)

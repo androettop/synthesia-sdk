@@ -126,7 +126,7 @@ testAuth();
 }
 ```
 
-**Solution**: Implement rate limiting in your application. See our [Rate Limiting Guide](../guides/rate-limiting.md).
+**Solution**: Implement rate limiting in your application. See our [Rate Limiting Guide](/synthesia-sdk/guides/rate-limiting/).
 
 ## Security Best Practices
 
@@ -177,6 +177,6 @@ const synthesia = new Synthesia(config);
 
 ## Next Steps
 
-- [Create your first video](quickstart.md)
-- [Explore API Reference](../api-reference/videos.md)
-- [Set up error handling](../guides/error-handling.md)
+- [Create your first video](/synthesia-sdk/getting-started/quickstart/)
+- [Explore API Reference](/synthesia-sdk/api-reference/videos/)
+- [Set up error handling](/synthesia-sdk/guides/error-handling/)

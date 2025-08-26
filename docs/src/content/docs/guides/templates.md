@@ -659,7 +659,7 @@ const templateData = {
 
 ## Next Steps
 
-- [Set up webhooks for template videos](./webhooks.md)
-- [Learn about custom asset uploads](./custom-assets.md)
-- [Explore advanced template examples](../examples/template-examples.md)
-- [API Reference: Templates](../api-reference/templates.md)
+- [Set up webhooks for template videos](/synthesia-sdk/guides/webhooks/)
+- [Learn about custom asset uploads](/synthesia-sdk/guides/custom-assets/)
+- [Explore advanced template examples](/synthesia-sdk/examples/template-examples/)
+- [API Reference: Templates](/synthesia-sdk/api-reference/templates/)
