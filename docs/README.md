@@ -162,7 +162,7 @@ npm run build
 - [Starlight Documentation](https://starlight.astro.build/)
 - [Astro Documentation](https://docs.astro.build/)
 - [Official Synthesia API Docs](https://docs.synthesia.io/reference)
-- [Synthesia SDK on GitHub](https://github.com/synthesia-io/@androettop/synthesia-sdk)
+- [Synthesia SDK on GitHub](https://github.com/androettop/synthesia-sdk)
 
 ## 📋 Development Notes
 

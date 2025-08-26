@@ -14,8 +14,7 @@ export default defineConfig({
         replacesTitle: true,
       },
       social: {
-        github: 'https://github.com/synthesia-io/@androettop/synthesia-sdk',
-        discord: 'https://discord.gg/synthesia',
+        github: 'https://github.com/androettop/synthesia-sdk',
       },
       sidebar: [
         {
@@ -42,9 +41,6 @@ export default defineConfig({
       components: {
         // Override the default `SocialIcons` component.
         SocialIcons: './src/components/SocialIcons.astro',
-      },
-      editLink: {
-        baseUrl: 'https://github.com/synthesia-io/@androettop/synthesia-sdk/edit/main/docs/',
       },
       lastUpdated: true,
       pagination: true,
