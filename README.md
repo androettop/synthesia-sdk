@@ -13,6 +13,10 @@ A comprehensive TypeScript SDK for the Synthesia API that allows you to create A
 - 🚨 **Error Handling**: Robust error handling with custom error types
 - ⚡ **Rate Limit Handling**: Built-in rate limit information tracking
 
+## 📖 Documentation
+
+For comprehensive documentation, guides, and examples, visit: **[https://androettop.github.io/synthesia-sdk](https://androettop.github.io/synthesia-sdk)**
+
 ## Installation
 
 ```bash
