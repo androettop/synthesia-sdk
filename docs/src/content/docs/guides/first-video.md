@@ -111,7 +111,7 @@ if (response.data) {
         case 'complete':
           console.log('✅ Video is ready!');
           console.log('Download URL:', video.download);
-          console.log('Thumbnail:', video.thumbnails?.static);
+          console.log('Thumbnail:', typeof video.thumbnail === 'string' ? video.thumbnail : video.thumbnail?.image);
           break;
           
         case 'failed':

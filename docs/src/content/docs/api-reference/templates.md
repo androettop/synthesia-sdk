@@ -38,6 +38,8 @@ async listTemplates(request?: ListTemplatesRequest): Promise<APIResponse<ListTem
 ```typescript
 interface ListTemplatesRequest {
   source?: 'synthesia' | 'workspace'; // Filter by template source
+  offset?: number;   // Pagination offset
+  limit?: number;    // Results per page (max 100)
 }
 ```
 
@@ -53,9 +55,9 @@ const response = await synthesia.templates.listTemplates({
 });
 
 if (response.data) {
-  console.log(`Found ${response.data.count} templates`);
+  console.log(`Found ${response.data.templates.length} templates`);
   response.data.templates.forEach(template => {
-    console.log(`- ${template.name} (${template.source})`);
+    console.log(`- ${template.title}`);
     console.log(`  Variables: ${template.variables.length}`);
   });
 }
@@ -84,9 +86,8 @@ const response = await synthesia.templates.getTemplate('template-123');
 
 if (response.data) {
   const template = response.data;
-  console.log('Template:', template.name);
+  console.log('Template:', template.title);
   console.log('Description:', template.description);
-  console.log('Source:', template.source);
   
   // Inspect template variables
   template.variables.forEach(variable => {

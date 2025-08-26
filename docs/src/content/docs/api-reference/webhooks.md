@@ -57,7 +57,7 @@ const response = await synthesia.webhooks.createWebhook({
 
 if (response.data) {
   console.log('Webhook created:', response.data.id);
-  console.log('Active:', response.data.active);
+  console.log('Status:', response.data.status);
   
   // Store webhook ID for future use
   const webhookId = response.data.id;
@@ -80,13 +80,13 @@ async listWebhooks(): Promise<APIResponse<ListWebhooksResponse>>
 const response = await synthesia.webhooks.listWebhooks();
 
 if (response.data) {
-  console.log(`Found ${response.data.count} webhooks`);
+  console.log(`Found ${response.data.webhooks.length} webhooks`);
   
   response.data.webhooks.forEach(webhook => {
     console.log(`- ID: ${webhook.id}`);
     console.log(`  URL: ${webhook.url}`);
     console.log(`  Events: ${webhook.events.join(', ')}`);
-    console.log(`  Active: ${webhook.active}`);
+    console.log(`  Status: ${webhook.status}`);
     console.log(`  Created: ${webhook.createdAt}`);
   });
 }
@@ -117,8 +117,8 @@ if (response.data) {
   const webhook = response.data;
   console.log('Webhook URL:', webhook.url);
   console.log('Events:', webhook.events);
-  console.log('Status:', webhook.active ? 'Active' : 'Inactive');
-  console.log('Last Updated:', webhook.updatedAt);
+  console.log('Status:', webhook.status);
+  console.log('Last Updated:', webhook.lastUpdatedAt);
 }
 ```
 
@@ -234,9 +234,9 @@ interface WebhookPayload {
     "updatedAt": "2024-01-15T10:35:00Z",
     "download": "https://download.synthesia.io/video-123.mp4",
     "duration": 45,
-    "thumbnails": {
-      "static": "https://thumbnails.synthesia.io/video-123-static.jpg",
-      "animated": "https://thumbnails.synthesia.io/video-123-animated.gif"
+    "thumbnail": {
+      "image": "https://thumbnails.synthesia.io/video-123-static.jpg",
+      "gif": "https://thumbnails.synthesia.io/video-123-animated.gif"
     },
     "captions": {
       "srt": "https://captions.synthesia.io/video-123.srt",
@@ -311,15 +311,14 @@ interface Webhook {
   id: string;
   url: string;
   events: WebhookEvent[];
+  status: 'active' | 'inactive';
   secret?: string;              // Not returned in API responses
-  createdAt: string;
-  updatedAt: string;
-  active: boolean;
+  createdAt: number;            // Unix timestamp
+  lastUpdatedAt: number;        // Unix timestamp
 }
 
 interface ListWebhooksResponse {
   webhooks: Webhook[];
-  count: number;
 }
 ```
 
@@ -356,7 +355,7 @@ app.post('/webhooks/synthesia', express.json(), async (req, res) => {
         await updateVideoStatus(video.id, 'completed', {
           downloadUrl: video.download,
           duration: video.duration,
-          thumbnailUrl: video.thumbnails?.static
+          thumbnailUrl: typeof video.thumbnail === 'string' ? video.thumbnail : video.thumbnail?.image
         });
         
         // Trigger post-processing (email notifications, etc.)
