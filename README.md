@@ -26,25 +26,25 @@ npm install @androettop/synthesia-sdk
 ## Quick Start
 
 ```typescript
-import { Synthesia } from '@androettop/synthesia-sdk';
+import { Synthesia } from "@androettop/synthesia-sdk";
 
 const synthesia = new Synthesia({
-  apiKey: 'your-api-key-here',
+  apiKey: "your-api-key-here",
 });
 
 // Create a simple video
 const result = await synthesia.videos.createVideo({
-  title: 'My First Video',
-  scriptText: 'Hello world! This is my first Synthesia video.',
-  avatar: 'anna_costume1_cameraA',
-  background: 'green_screen',
+  title: "My First Video",
+  scriptText: "Hello world! This is my first Synthesia video.",
+  avatar: "anna_costume1_cameraA",
+  background: "green_screen",
   test: true, // Use test mode for development
 });
 
 if (result.error) {
-  console.error('Error:', result.error.message);
+  console.error("Error:", result.error.message);
 } else {
-  console.log('Video created:', result.data.id);
+  console.log("Video created:", result.data.id);
 }
 ```
 
@@ -54,8 +54,8 @@ if (result.error) {
 
 ```typescript
 const synthesia = new Synthesia({
-  apiKey: 'your-api-key',        // Required: Your Synthesia API key
-  baseURL?: 'https://custom.api' // Optional: Custom API base URL
+  apiKey: "your-api-key", // Required: Your Synthesia API key
+  baseURL: "https://custom.api", // Optional: Custom API base URL
 });
 ```
 
@@ -65,13 +65,13 @@ const synthesia = new Synthesia({
 
 ```typescript
 const result = await synthesia.videos.createVideo({
-  title: 'Video Title',
-  scriptText: 'Your script text',
-  avatar: 'anna_costume1_cameraA',
-  background: 'green_screen',
+  title: "Video Title",
+  scriptText: "Your script text",
+  avatar: "anna_costume1_cameraA",
+  background: "green_screen",
   test: true, // Optional: test mode
-  visibility: 'private', // Optional: 'public' | 'private'
-  webhookId: 'webhook-id', // Optional: webhook for notifications
+  visibility: "private", // Optional: 'public' | 'private'
+  webhookId: "webhook-id", // Optional: webhook for notifications
 });
 ```
 
@@ -79,45 +79,45 @@ const result = await synthesia.videos.createVideo({
 
 ```typescript
 const result = await synthesia.videos.listVideos({
-  source: 'workspace', // Optional: 'workspace' | 'personal' | 'shared'
-  limit: 10,          // Optional: number of videos to return
-  offset: 0,          // Optional: pagination offset
+  source: "workspace", // Optional: 'workspace' | 'personal' | 'shared'
+  limit: 10, // Optional: number of videos to return
+  offset: 0, // Optional: pagination offset
 });
 ```
 
 #### Get Video
 
 ```typescript
-const result = await synthesia.videos.getVideo('video-id');
+const result = await synthesia.videos.getVideo("video-id");
 ```
 
 #### Update Video
 
 ```typescript
-const result = await synthesia.videos.updateVideo('video-id', {
-  title: 'New Title',
-  visibility: 'public',
+const result = await synthesia.videos.updateVideo("video-id", {
+  title: "New Title",
+  visibility: "public",
 });
 ```
 
 #### Delete Video
 
 ```typescript
-const result = await synthesia.videos.deleteVideo('video-id');
+const result = await synthesia.videos.deleteVideo("video-id");
 ```
 
 #### Create Video from Template
 
 ```typescript
 const result = await synthesia.videos.createVideoFromTemplate(
-  'template-id',
+  "template-id",
   {
     // Template variables
-    name: 'John Doe',
-    company: 'Acme Corp',
+    name: "John Doe",
+    company: "Acme Corp",
   },
   {
-    title: 'Personalized Video',
+    title: "Personalized Video",
     test: true,
   }
 );
@@ -129,14 +129,14 @@ const result = await synthesia.videos.createVideoFromTemplate(
 
 ```typescript
 const result = await synthesia.templates.listTemplates({
-  source: 'synthesia', // Optional: 'synthesia' | 'workspace'
+  source: "synthesia", // Optional: 'synthesia' | 'workspace'
 });
 ```
 
 #### Get Template
 
 ```typescript
-const result = await synthesia.templates.getTemplate('template-id');
+const result = await synthesia.templates.getTemplate("template-id");
 ```
 
 ### Webhooks API
@@ -145,9 +145,9 @@ const result = await synthesia.templates.getTemplate('template-id');
 
 ```typescript
 const result = await synthesia.webhooks.createWebhook({
-  url: 'https://your-app.com/webhook',
-  events: ['video.complete', 'video.failed'],
-  secret: 'your-webhook-secret', // Optional but recommended
+  url: "https://your-app.com/webhook",
+  events: ["video.complete", "video.failed"],
+  secret: "your-webhook-secret", // Optional but recommended
 });
 ```
 
@@ -160,21 +160,21 @@ const result = await synthesia.webhooks.listWebhooks();
 #### Get Webhook
 
 ```typescript
-const result = await synthesia.webhooks.getWebhook('webhook-id');
+const result = await synthesia.webhooks.getWebhook("webhook-id");
 ```
 
 #### Update Webhook
 
 ```typescript
-const result = await synthesia.webhooks.updateWebhook('webhook-id', {
-  events: ['video.complete'],
+const result = await synthesia.webhooks.updateWebhook("webhook-id", {
+  events: ["video.complete"],
 });
 ```
 
 #### Delete Webhook
 
 ```typescript
-const result = await synthesia.webhooks.deleteWebhook('webhook-id');
+const result = await synthesia.webhooks.deleteWebhook("webhook-id");
 ```
 
 ### Uploads API
@@ -182,19 +182,22 @@ const result = await synthesia.webhooks.deleteWebhook('webhook-id');
 #### Upload Asset
 
 ```typescript
-const file = new Blob(['audio data'], { type: 'audio/mpeg' });
+const file = new Blob(["audio data"], { type: "audio/mpeg" });
 const result = await synthesia.uploads.uploadAsset({
   file,
-  filename: 'audio.mp3',
-  type: 'audio',
+  filename: "audio.mp3",
+  type: "audio",
 });
 ```
 
 #### Upload Script Audio
 
 ```typescript
-const audioFile = new Blob(['audio data'], { type: 'audio/mpeg' });
-const result = await synthesia.uploads.uploadScriptAudio(audioFile, 'script.mp3');
+const audioFile = new Blob(["audio data"], { type: "audio/mpeg" });
+const result = await synthesia.uploads.uploadScriptAudio(
+  audioFile,
+  "script.mp3"
+);
 ```
 
 ## Error Handling
@@ -202,27 +205,30 @@ const result = await synthesia.uploads.uploadScriptAudio(audioFile, 'script.mp3'
 The SDK provides comprehensive error handling with custom error types:
 
 ```typescript
-import { SynthesiaSDKError, ValidationError, AuthenticationError } from '@androettop/synthesia-sdk';
+import {
+  SynthesiaSDKError,
+  ValidationError,
+  AuthenticationError,
+} from "@androettop/synthesia-sdk";
 
 try {
   const result = await synthesia.videos.createVideo({
-    title: 'Test Video',
+    title: "Test Video",
   });
-  
+
   if (result.error) {
     throw SynthesiaSDKError.fromResponse(result.error);
   }
-  
 } catch (error) {
   if (error instanceof AuthenticationError) {
-    console.error('Authentication failed:', error.message);
+    console.error("Authentication failed:", error.message);
   } else if (error instanceof ValidationError) {
-    console.error('Validation error:', error.message, error.details);
+    console.error("Validation error:", error.message, error.details);
   } else if (error instanceof SynthesiaSDKError) {
-    console.error('Synthesia API error:', error.message);
-    
+    console.error("Synthesia API error:", error.message);
+
     if (error.isRateLimited()) {
-      console.log('Rate limited, retry after:', error.retryAfter);
+      console.log("Rate limited, retry after:", error.retryAfter);
     }
   }
 }
@@ -233,7 +239,7 @@ try {
 The SDK includes utility functions for common tasks:
 
 ```typescript
-import { SynthesiaUtils } from '@androettop/synthesia-sdk';
+import { SynthesiaUtils } from "@androettop/synthesia-sdk";
 
 // Validate webhook signatures
 const isValid = SynthesiaUtils.validateWebhookSignature(
@@ -245,11 +251,11 @@ const isValid = SynthesiaUtils.validateWebhookSignature(
 // Poll video status until completion
 const finalStatus = await SynthesiaUtils.pollVideoStatus(
   (id) => synthesia.videos.getVideo(id),
-  'video-id',
+  "video-id",
   {
     maxAttempts: 60,
     intervalMs: 10000,
-    onStatusUpdate: (status) => console.log('Status:', status),
+    onStatusUpdate: (status) => console.log("Status:", status),
   }
 );
 ```
@@ -263,9 +269,9 @@ const result = await synthesia.videos.createVideo(videoData);
 const rateLimitInfo = synthesia.getRateLimitInfo();
 
 if (rateLimitInfo) {
-  console.log('Rate limit:', rateLimitInfo.limit);
-  console.log('Remaining:', rateLimitInfo.remaining);
-  console.log('Reset at:', rateLimitInfo.resetAt);
+  console.log("Rate limit:", rateLimitInfo.limit);
+  console.log("Remaining:", rateLimitInfo.remaining);
+  console.log("Reset at:", rateLimitInfo.resetAt);
 }
 ```
 
@@ -274,35 +280,35 @@ if (rateLimitInfo) {
 Example webhook handler:
 
 ```typescript
-import { SynthesiaUtils } from '@androettop/synthesia-sdk';
-import express from 'express';
+import { SynthesiaUtils } from "@androettop/synthesia-sdk";
+import express from "express";
 
 const app = express();
 
-app.post('/webhook', express.raw({ type: 'application/json' }), (req, res) => {
+app.post("/webhook", express.raw({ type: "application/json" }), (req, res) => {
   const payload = req.body.toString();
-  const signature = req.headers['x-signature'] as string;
-  const secret = 'your-webhook-secret';
+  const signature = req.headers["x-signature"] as string;
+  const secret = "your-webhook-secret";
 
   if (!SynthesiaUtils.validateWebhookSignature(payload, signature, secret)) {
-    return res.status(401).send('Invalid signature');
+    return res.status(401).send("Invalid signature");
   }
 
   const data = JSON.parse(payload);
-  
+
   switch (data.event) {
-    case 'video.complete':
-      console.log('Video completed:', data.video.id);
+    case "video.complete":
+      console.log("Video completed:", data.video.id);
       // Handle video completion
       break;
-      
-    case 'video.failed':
-      console.log('Video failed:', data.video.id);
+
+    case "video.failed":
+      console.log("Video failed:", data.video.id);
       // Handle video failure
       break;
   }
 
-  res.status(200).send('OK');
+  res.status(200).send("OK");
 });
 ```
 
@@ -335,18 +341,21 @@ npm run lint
 This SDK implements all available Synthesia API endpoints:
 
 ### Videos API ✅
+
 - [x] Create Video
-- [x] List Videos  
+- [x] List Videos
 - [x] Get Video
 - [x] Update Video
 - [x] Delete Video
 - [x] Create Video from Template
 
 ### Templates API ✅
+
 - [x] List Templates
 - [x] Get Template
 
 ### Webhooks API ✅
+
 - [x] Create Webhook
 - [x] List Webhooks
 - [x] Get Webhook
@@ -354,6 +363,7 @@ This SDK implements all available Synthesia API endpoints:
 - [x] Delete Webhook
 
 ### Upload API ✅
+
 - [x] Upload Assets
 - [x] Get Asset
 - [x] Delete Asset
@@ -374,4 +384,5 @@ MIT License - see LICENSE file for details.
 ## Support
 
 For issues with this SDK, please create an issue on GitHub.
+
 For Synthesia API questions, consult the [official documentation](https://docs.synthesia.io/).
