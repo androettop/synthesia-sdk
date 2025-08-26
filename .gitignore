@@ -56,10 +56,6 @@ temp/
 # Prettier cache
 .prettiercache
 
-# Package lock files (choose one)
-package-lock.json
-# yarn.lock
-
 # Test files that shouldn't be committed
 test-results/
 playwright-report/
