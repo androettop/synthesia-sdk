@@ -259,4 +259,44 @@ describe('VideosAPI', () => {
       });
     });
   });
+
+  describe('deleteVideo', () => {
+    it('should delete a video successfully', async () => {
+      mockRequest.mockResolvedValue({
+        data: null,
+      });
+
+      const result = await videosAPI.deleteVideo('video-123');
+
+      expect(result.data).toBeNull();
+      expect(result.error).toBeUndefined();
+      expect(mockRequest).toHaveBeenCalledWith({
+        method: 'DELETE',
+        url: '/videos/video-123',
+        data: undefined,
+        params: undefined,
+      });
+    });
+
+    it('should handle errors when deleting a video', async () => {
+      const mockError = {
+        response: {
+          status: 404,
+          data: {
+            message: 'Video not found',
+            code: 'NOT_FOUND',
+          },
+        },
+        message: 'Not Found',
+      };
+
+      mockRequest.mockRejectedValue(mockError);
+
+      const result = await videosAPI.deleteVideo('non-existent-video');
+
+      expect(result.data).toBeUndefined();
+      expect(result.error).toBeDefined();
+      expect(result.error?.message).toBe('Not Found');
+    });
+  });
 });

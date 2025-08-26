@@ -132,6 +132,7 @@ export interface ListTemplatesRequest {
 export interface Webhook {
   id: string;
   url: string;
+  events: WebhookEvent[];
   status: 'active' | 'inactive';
   secret?: string;
   createdAt: number;
@@ -143,6 +144,7 @@ export type WebhookEvent = 'video.completed' | 'video.failed' | 'video.created';
 export interface CreateWebhookRequest {
   url: string;
   events: WebhookEvent[];
+  secret?: string;
 }
 
 export interface ListWebhooksResponse {

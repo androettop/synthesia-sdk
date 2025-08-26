@@ -44,6 +44,7 @@ describe('WebhooksAPI', () => {
       const mockWebhook: Webhook = {
         id: 'webhook-123',
         url: 'https://example.com/webhook',
+        events: ['video.completed'],
         status: 'active',
         createdAt: 1672531200,
         lastUpdatedAt: 1672531200,
@@ -78,6 +79,7 @@ describe('WebhooksAPI', () => {
           {
             id: 'webhook-1',
             url: 'https://example.com/webhook1',
+            events: ['video.completed', 'video.failed'],
             status: 'active',
             createdAt: 1672531200,
             lastUpdatedAt: 1672531200,
@@ -106,6 +108,7 @@ describe('WebhooksAPI', () => {
       const mockWebhook: Webhook = {
         id: 'webhook-123',
         url: 'https://example.com/webhook',
+        events: ['video.completed', 'video.failed'],
         status: 'active',
         secret: 'webhook-secret',
         createdAt: 1672531200,
