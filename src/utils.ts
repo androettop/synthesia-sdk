@@ -16,7 +16,7 @@ export class SynthesiaUtils {
   }
 
   static isValidWebhookEvent(event: string): event is WebhookEvent {
-    const validEvents: WebhookEvent[] = ['video.completed', 'video.failed'];
+    const validEvents: WebhookEvent[] = ['video.completed', 'video.failed', 'video.created'];
     return validEvents.includes(event as WebhookEvent);
   }
 

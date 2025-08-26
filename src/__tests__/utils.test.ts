@@ -3,7 +3,7 @@ import { SynthesiaUtils } from '../utils';
 describe('SynthesiaUtils', () => {
   describe('validateWebhookSignature', () => {
     it('should validate correct webhook signature', () => {
-      const payload = '{"event":"video.complete","video":{"id":"123"}}';
+      const payload = '{"event":"video.completed","video":{"id":"123"}}';
       const secret = 'test-secret';
       const crypto = require('crypto');
       const expectedSignature = crypto
@@ -17,7 +17,7 @@ describe('SynthesiaUtils', () => {
     });
 
     it('should reject invalid webhook signature', () => {
-      const payload = '{"event":"video.complete","video":{"id":"123"}}';
+      const payload = '{"event":"video.completed","video":{"id":"123"}}';
       const secret = 'test-secret';
       const signature = 'sha256=invalid-signature';
 

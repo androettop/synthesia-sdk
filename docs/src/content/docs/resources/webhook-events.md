@@ -14,7 +14,7 @@ Complete reference for all webhook events and their payload structures in the Sy
 Synthesia sends webhook events to notify your application about video processing lifecycle changes:
 
 ```typescript
-type WebhookEvent = 'video.created' | 'video.complete' | 'video.failed';
+type WebhookEvent = 'video.created' | 'video.completed' | 'video.failed';
 ```
 
 ## Event Payload Structure
@@ -83,7 +83,7 @@ function handleVideoCreated(payload: WebhookPayload) {
 }
 ```
 
-## video.complete Event
+## video.completed Event
 
 Triggered when video generation completes successfully.
 
@@ -97,7 +97,7 @@ Triggered when video generation completes successfully.
 
 ```json
 {
-  "event": "video.complete",
+  "event": "video.completed",
   "data": {
     "id": "video-abc123",
     "title": "My New Video",
@@ -295,7 +295,7 @@ async function handleWebhookEvent(payload: WebhookPayload) {
         await handleVideoCreated(payload);
         break;
         
-      case 'video.complete':
+      case 'video.completed':
         await handleVideoComplete(payload);
         break;
         
@@ -331,7 +331,7 @@ class VideoStateManager {
   constructor() {
     // Register default handlers
     this.on('video.created', this.onVideoCreated.bind(this));
-    this.on('video.complete', this.onVideoComplete.bind(this));
+    this.on('video.completed', this.onVideoComplete.bind(this));
     this.on('video.failed', this.onVideoFailed.bind(this));
   }
   
@@ -434,7 +434,7 @@ class VideoStateManager {
 const stateManager = new VideoStateManager();
 
 // Add custom handlers
-stateManager.on('video.complete', async (payload) => {
+stateManager.on('video.completed', async (payload) => {
   // Custom completion logic
   await sendSlackNotification(`Video ${payload.data.title} is ready!`);
 });
@@ -478,7 +478,7 @@ const typicalEventFlow = [
     videoStatus: 'in_progress'
   },
   {
-    event: 'video.complete',
+    event: 'video.completed',
     timing: '2-10 minutes later (depending on video length)',
     videoStatus: 'complete'
   }
@@ -661,7 +661,7 @@ async function testWebhookHandler(eventType: WebhookEvent, videoData: Partial<Vi
     data: {
       id: 'test-video-123',
       title: 'Test Video',
-      status: eventType === 'video.complete' ? 'complete' : 
+      status: eventType === 'video.completed' ? 'complete' : 
               eventType === 'video.failed' ? 'failed' : 'in_progress',
       visibility: 'private',
       createdAt: new Date().toISOString(),
@@ -686,7 +686,7 @@ async function testWebhookHandler(eventType: WebhookEvent, videoData: Partial<Vi
 async function runWebhookTests() {
   await testWebhookHandler('video.created', {});
   
-  await testWebhookHandler('video.complete', {
+  await testWebhookHandler('video.completed', {
     download: 'https://example.com/test-video.mp4',
     duration: 45,
     thumbnails: {

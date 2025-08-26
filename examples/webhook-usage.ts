@@ -11,7 +11,7 @@ async function webhookUsageExample() {
     
     const webhookResult = await synthesia.webhooks.createWebhook({
       url: 'https://your-app.com/webhooks/synthesia',
-      events: ['video.complete', 'video.failed'] as WebhookEvent[],
+      events: ['video.completed', 'video.failed'] as WebhookEvent[],
       secret: 'your-webhook-secret',
     });
 

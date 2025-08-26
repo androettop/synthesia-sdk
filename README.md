@@ -153,7 +153,7 @@ const result = await synthesia.templates.getTemplate("template-id");
 ```typescript
 const result = await synthesia.webhooks.createWebhook({
   url: "https://your-app.com/webhook",
-  events: ["video.complete", "video.failed"],
+  events: ["video.completed", "video.failed"],
   secret: "your-webhook-secret", // Optional but recommended
 });
 ```
@@ -178,7 +178,7 @@ const result = await synthesia.webhooks.getWebhook("webhook-id");
 await synthesia.webhooks.deleteWebhook("webhook-id");
 const result = await synthesia.webhooks.createWebhook({
   url: "https://your-app.com/webhook",
-  events: ["video.complete"],
+  events: ["video.completed"],
 });
 ```
 
@@ -304,7 +304,7 @@ app.post("/webhook", express.raw({ type: "application/json" }), (req, res) => {
   const data = JSON.parse(payload);
 
   switch (data.event) {
-    case "video.complete":
+    case "video.completed":
       console.log("Video completed:", data.video.id);
       // Handle video completion
       break;

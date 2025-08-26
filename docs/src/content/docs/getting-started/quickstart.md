@@ -222,7 +222,7 @@ Instead of polling, you can set up webhooks to get notified when videos are read
 async function setupWebhook() {
   const webhook = await synthesia.webhooks.createWebhook({
     url: 'https://your-app.com/webhooks/synthesia',
-    events: ['video.complete', 'video.failed'],
+    events: ['video.completed', 'video.failed'],
     secret: 'your-webhook-secret',
   });
 

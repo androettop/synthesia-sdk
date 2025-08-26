@@ -37,7 +37,7 @@ app.post('/webhooks/synthesia', (req, res) => {
   console.log(`Received ${event} for video ${video.id}`);
   
   switch (event) {
-    case 'video.complete':
+    case 'video.completed':
       console.log('✅ Video completed:', video.download);
       // Handle completed video (save URL, notify user, etc.)
       break;
@@ -74,7 +74,7 @@ const synthesia = new Synthesia({
 async function setupWebhook() {
   const response = await synthesia.webhooks.createWebhook({
     url: 'https://your-app.com/webhooks/synthesia',
-    events: ['video.complete', 'video.failed'],
+    events: ['video.completed', 'video.failed'],
     secret: 'your-webhook-secret-key' // Optional but recommended
   });
   
@@ -170,7 +170,7 @@ async function handleWebhookEvent(event: string, video: any, timestamp: string) 
       await handleVideoCreated(video);
       break;
       
-    case 'video.complete':
+    case 'video.completed':
       await handleVideoComplete(video);
       break;
       
@@ -339,7 +339,7 @@ class WebhookManager {
     // Create new webhook
     const response = await this.synthesia.webhooks.createWebhook({
       url: webhookUrl,
-      events: config.events || ['video.complete', 'video.failed'],
+      events: config.events || ['video.completed', 'video.failed'],
       secret: config.secret || process.env.SYNTHESIA_WEBHOOK_SECRET
     });
     
@@ -385,7 +385,7 @@ const webhookManager = new WebhookManager(synthesia);
 
 const webhookId = await webhookManager.setupProductionWebhook({
   baseUrl: 'https://your-app.com',
-  events: ['video.created', 'video.complete', 'video.failed'],
+  events: ['video.created', 'video.completed', 'video.failed'],
   secret: process.env.SYNTHESIA_WEBHOOK_SECRET
 });
 
@@ -450,7 +450,7 @@ videoEventQueue.process('process-event', async (job) => {
   console.log(`Processing ${event} for video ${video.id}`);
   
   switch (event) {
-    case 'video.complete':
+    case 'video.completed':
       await handleVideoComplete(video);
       break;
     case 'video.failed':
@@ -482,7 +482,7 @@ async function handleVideoComplete(video: any) {
     await prisma.video.update({
       where: { synthesia_id: video.id },
       data: {
-        status: 'completed',
+        status: 'complete',
         download_url: video.download,
         duration: video.duration,
         thumbnail_url: video.thumbnails?.static,

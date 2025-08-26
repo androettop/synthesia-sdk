@@ -138,7 +138,7 @@ export interface Webhook {
   lastUpdatedAt: number;
 }
 
-export type WebhookEvent = 'video.completed' | 'video.failed';
+export type WebhookEvent = 'video.completed' | 'video.failed' | 'video.created';
 
 export interface CreateWebhookRequest {
   url: string;

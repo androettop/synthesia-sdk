@@ -43,7 +43,7 @@ interface CreateWebhookRequest {
   secret?: string;          // Optional secret for signature verification
 }
 
-type WebhookEvent = 'video.created' | 'video.complete' | 'video.failed';
+type WebhookEvent = 'video.created' | 'video.completed' | 'video.failed';
 ```
 
 #### Example
@@ -51,7 +51,7 @@ type WebhookEvent = 'video.created' | 'video.complete' | 'video.failed';
 ```typescript
 const response = await synthesia.webhooks.createWebhook({
   url: 'https://your-app.com/webhooks/synthesia',
-  events: ['video.complete', 'video.failed'],
+  events: ['video.completed', 'video.failed'],
   secret: 'your-webhook-secret-key'
 });
 
@@ -142,7 +142,7 @@ const deleteResponse = await synthesia.webhooks.deleteWebhook('webhook-123');
 if (!deleteResponse.error) {
   const newResponse = await synthesia.webhooks.createWebhook({
     url: 'https://new-domain.com/webhooks/synthesia',
-    events: ['video.created', 'video.complete', 'video.failed'],
+    events: ['video.created', 'video.completed', 'video.failed'],
     secret: 'your-webhook-secret'
   });
   
@@ -188,7 +188,7 @@ if (!response.error) {
 | Event | Description | Payload |
 |-------|-------------|---------|
 | `video.created` | Video creation started | Video object with `in_progress` status |
-| `video.complete` | Video generation completed | Video object with `complete` status and download URLs |
+| `video.completed` | Video generation completed | Video object with `complete` status and download URLs |
 | `video.failed` | Video generation failed | Video object with `failed` status and error details |
 
 ### Event Payload Structure
@@ -221,10 +221,10 @@ interface WebhookPayload {
 }
 ```
 
-#### video.complete
+#### video.completed
 ```json
 {
-  "event": "video.complete",
+  "event": "video.completed",
   "data": {
     "id": "video-123",
     "title": "My Video",
@@ -348,7 +348,7 @@ app.post('/webhooks/synthesia', express.json(), async (req, res) => {
         await updateVideoStatus(video.id, 'processing');
         break;
         
-      case 'video.complete':
+      case 'video.completed':
         console.log(`Video completed: ${video.title}`);
         console.log(`Download URL: ${video.download}`);
         
@@ -414,7 +414,7 @@ export default async function handler(
     
     // Process webhook event
     switch (event) {
-      case 'video.complete':
+      case 'video.completed':
         // Download and store video
         await downloadAndStoreVideo(video);
         break;
@@ -462,7 +462,7 @@ class WebhookManager {
     // Create new webhook
     const response = await this.synthesia.webhooks.createWebhook({
       url: `${baseUrl}/webhooks/synthesia`,
-      events: ['video.complete', 'video.failed'],
+      events: ['video.completed', 'video.failed'],
       secret: process.env.WEBHOOK_SECRET
     });
     
@@ -570,7 +570,7 @@ app.post('/webhooks/synthesia', express.json(), async (req, res) => {
 try {
   const response = await synthesia.webhooks.createWebhook({
     url: 'https://invalid-url',
-    events: ['video.complete']
+    events: ['video.completed']
   });
   
   if (response.error) {
