@@ -705,5 +705,4 @@ if (!validation.isValid) {
 
 - [Explore avatar options](/synthesia-sdk/resources/avatars/)
 - [Learn about webhook events](/synthesia-sdk/resources/webhook-events/)
-- [See voice examples in action](/synthesia-sdk/examples/voice-showcase/)
 - [Read the API reference](/synthesia-sdk/api-reference/videos/)

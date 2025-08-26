@@ -465,4 +465,3 @@ async function createLessonVideo(lesson: {
 
 - [Create videos using templates](/synthesia-sdk/guides/templates/)
 - [Learn about the Videos API](/synthesia-sdk/api-reference/videos/)
-- [Explore batch processing examples](/synthesia-sdk/examples/advanced-usage/)

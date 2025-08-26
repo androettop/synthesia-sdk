@@ -760,5 +760,4 @@ processedDeliveries.add(deliveryId);
 
 - [Implement error handling patterns](/synthesia-sdk/guides/error-handling/)
 - [Learn about rate limiting](/synthesia-sdk/guides/rate-limiting/)
-- [Explore webhook examples](/synthesia-sdk/examples/webhook-integrations/)
 - [API Reference: Webhooks](/synthesia-sdk/api-reference/webhooks/)

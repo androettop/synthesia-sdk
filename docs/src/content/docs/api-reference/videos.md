@@ -454,4 +454,3 @@ try {
 
 - [Learn about Templates API](/synthesia-sdk/api-reference/templates/)
 - [Set up Webhooks](/synthesia-sdk/api-reference/webhooks/)
-- [Explore advanced examples](/synthesia-sdk/examples/advanced-usage/)
